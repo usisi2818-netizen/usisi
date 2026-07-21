@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#06122a">
+<title>SCHEDULE | 우시시 USISI Official</title>
+<meta name="description" content="우시시 방송 일정 — 휴방 랜덤, 오후 10시 이후">
+<link rel="icon" type="image/jpeg" href="https://profile.img.sooplive.co.kr/LOGO/nw/nwakdifl1/nwakdifl1.jpg">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/signal.css">
+<style>
+/* ── SCHEDULE 전용 ── */
+.cal{border:1px solid var(--pf-line);background:rgba(3,9,20,.32)}
+body.day .cal{background:rgba(255,255,255,.4)}
+.cal-head{display:flex;justify-content:space-between;align-items:center;padding:15px 18px;border-bottom:1px solid var(--pf-line)}
+.cal-title{font-family:"Arial Black",sans-serif;font-size:17px;letter-spacing:.04em;color:var(--pf-tx)}
+.cal-nav{width:36px;height:36px;border:1px solid var(--pf-line);background:rgba(169,213,255,.06);color:var(--pf-tx2);font-size:15px;cursor:pointer;transition:.2s}
+.cal-nav:hover{color:var(--pf-tx);background:rgba(169,213,255,.16)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.cal-dow{padding:11px 4px;text-align:center;font-size:11px;font-weight:900;letter-spacing:.14em;color:#9dccfb;border-bottom:1px solid var(--pf-line)}
+body.day .cal-dow{color:#2f6fb4}
+.cal-dow:first-child{color:#ff9fb2}
+.cal-dow:last-child{color:#8fe3c7}
+body.day .cal-dow:first-child{color:#d95f7f}
+body.day .cal-dow:last-child{color:#1f7a52}
+.cal-cell{min-height:94px;border-top:1px solid var(--pf-line);border-right:1px solid var(--pf-line);padding:6px 6px 7px;position:relative;overflow:hidden}
+.cal-cell:nth-child(7n){border-right:none}
+.cal-cell.other{opacity:.32}
+.cal-cell.has{cursor:pointer}
+.cal-cell.has:hover{background:rgba(143,199,255,.08)}
+.cal-cell.today{background:rgba(143,199,255,.09)}
+.cal-cell.hl{box-shadow:inset 0 0 0 1px var(--pf-acc)}
+.cal-date{font-family:"Arial Black",sans-serif;font-size:12px;color:var(--pf-tx3);padding:1px 2px}
+.cal-cell:nth-child(7n+1) .cal-date{color:#ff9fb2}
+.cal-cell:nth-child(7n) .cal-date{color:#8fe3c7}
+body.day .cal-cell:nth-child(7n+1) .cal-date{color:#d95f7f}
+body.day .cal-cell:nth-child(7n) .cal-date{color:#1f7a52}
+.cal-cell.today .cal-date{background:var(--pf-ice);color:#0a1526;padding:1px 6px}
+body.day .cal-cell.today .cal-date{color:#fff}
+.ev{font-size:10px;padding:3px 6px;margin-top:3px;border:1px solid;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:800;letter-spacing:.02em;max-width:100%}
+/* 이벤트 색 — NIGHT */
+.c-green{background:rgba(94,214,164,.14);color:#9df0cb;border-color:rgba(94,214,164,.4)}
+.c-pink{background:rgba(255,143,171,.14);color:#ffb3c6;border-color:rgba(255,143,171,.42)}
+.c-yellow{background:rgba(255,214,110,.14);color:#ffe3a1;border-color:rgba(255,214,110,.42)}
+.c-orange{background:rgba(255,166,110,.14);color:#ffc7a3;border-color:rgba(255,166,110,.42)}
+.c-blue{background:rgba(143,199,255,.15);color:#c0ddff;border-color:rgba(143,199,255,.45)}
+.c-purple{background:rgba(190,150,255,.14);color:#dcc7ff;border-color:rgba(190,150,255,.42)}
+.c-red{background:rgba(255,110,110,.16);color:#ffb0b0;border-color:rgba(255,110,110,.45)}
+.c-gray{background:rgba(200,214,232,.12);color:#c2cede;border-color:rgba(200,214,232,.35)}
+/* 이벤트 색 — DAY */
+body.day .c-green{background:#d6f0e4;color:#1f7a52;border-color:#a5dcc2}
+body.day .c-pink{background:#ffe0eb;color:#d95f7f;border-color:#f3b8ca}
+body.day .c-yellow{background:#fff0cc;color:#b07d18;border-color:#ecd39a}
+body.day .c-orange{background:#ffe0cc;color:#c2611f;border-color:#eec3a2}
+body.day .c-blue{background:#d6e8fa;color:#2c6fb0;border-color:#aecdec}
+body.day .c-purple{background:#e8ddf7;color:#7a4fb0;border-color:#ccb9e8}
+body.day .c-red{background:#ffd9d9;color:#c44;border-color:#efb0b0}
+body.day .c-gray{background:#ececed;color:#666;border-color:#cfcfd2}
+/* 다가오는 일정 */
+.up{display:flex;align-items:center;gap:16px;padding:14px 16px;margin-bottom:9px;border:1px solid var(--pf-line);border-left:3px solid currentColor;cursor:pointer;transition:.2s}
+.up:hover{background:rgba(143,199,255,.07)}
+.up-date{flex:0 0 auto;width:96px;font-family:"Arial Black",sans-serif;font-size:13px;letter-spacing:.02em}
+.up-info{flex:1;min-width:0}
+.up-title{color:var(--pf-tx);font-size:15.5px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.up-time{color:var(--pf-tx3);font-size:12.5px;font-weight:700;margin-top:3px;letter-spacing:.06em}
+.up-b{flex:0 0 auto;padding:6px 13px;border:1px solid;font-size:11px;font-weight:900;letter-spacing:.14em}
+/* 날짜 모달 */
+#schOv{position:fixed;inset:0;z-index:80;background:rgba(2,6,14,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px}
+#schOv.on{display:flex}
+.sch-m{width:min(420px,100%);padding:28px;border:1px solid rgba(175,214,255,.45);background:rgba(4,11,24,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 30px 90px rgba(0,0,0,.55)}
+body.day .sch-m{background:rgba(248,252,255,.97);border-color:#2f6fb4}
+.sch-m .md{color:#9dccfb;font-size:11px;font-weight:900;letter-spacing:.2em;margin-bottom:14px}
+body.day .sch-m .md{color:#2f6fb4}
+.sch-m .mb{display:inline-block;padding:5px 13px;border:1px solid;font-size:11px;font-weight:900;letter-spacing:.14em;margin-bottom:12px}
+.sch-m .mp{border:1px solid var(--pf-line);background:rgba(169,213,255,.05);padding:12px 15px;margin-bottom:8px}
+.sch-m .mp .pt{color:#9dccfb;font-size:11px;font-weight:900;letter-spacing:.14em}
+body.day .sch-m .mp .pt{color:#2f6fb4}
+.sch-m .mp .pn{color:var(--pf-tx);font-size:15.5px;font-weight:800;margin-top:4px}
+.sch-m .mdsc{border:1px solid var(--pf-line);background:rgba(169,213,255,.05);padding:12px 15px;margin-bottom:8px;color:var(--pf-tx2);font-size:13.5px;line-height:1.7;white-space:pre-wrap}
+.sch-m .mc{width:100%;margin-top:8px;padding:13px;border:1px solid var(--pf-line);background:rgba(143,199,255,.14);color:var(--pf-tx);font-size:12px;font-weight:900;letter-spacing:.14em;cursor:pointer}
+.sch-m .mc:hover{background:rgba(143,199,255,.26)}
+@media (max-width:820px){
+  .cal-cell{min-height:66px;padding:3px 3px 4px}
+  .cal-date{font-size:10.5px}
+  .ev{font-size:8.5px;padding:2px 3px;margin-top:2px}
+  .cal-dow{padding:8px 1px;font-size:10px}
+  .up{gap:10px;padding:12px 12px}
+  .up-date{width:78px;font-size:12px}
+  .up-title{font-size:14px}
+  .up-b{padding:5px 10px;font-size:10px}
+}
+</style>
+</head>
+
+<body class="sg">
+<script>if(localStorage.getItem('usisi-mode')==='day')document.body.classList.add('day');</script>
+<div class="pf-gridbg" aria-hidden="true"></div>
+<div id="pfStars" aria-hidden="true"></div>
+
+<header class="pf-header">
+  <a class="wordmark compact" href="../" aria-label="우시시 메인">
+    <span class="mark-star" aria-hidden="true">✦</span>
+    <span>USISI</span>
+  </a>
+  <div class="c3-frequency">FREQUENCY<b>04.10 / 22:00</b></div>
+  <nav class="main-nav" aria-label="주요 메뉴">
+    <a href="../">MAIN</a>
+    <a href="../profile/">PROFILE</a>
+    <a class="active" href="../schedule/">SCHEDULE</a>
+    <a href="../song/">SONG BOOK</a>
+    <a href="../work/">UPBO</a>
+    <a href="../dress/">CLOSET</a>
+  </nav>
+  <div class="pf-hright">
+    <button class="pf-mode" id="pfMode" type="button" aria-label="낮/밤 모드 전환"><span class="mi">☾</span><span class="mt">NIGHT</span></button>
+    <a class="pf-enter" href="https://www.sooplive.com/station/nwakdifl1" target="_blank" rel="noreferrer">ENTER CHANNEL <span aria-hidden="true">↗</span></a>
+  </div>
+</header>
+
+<nav class="pf-subnav" aria-label="모바일 메뉴">
+  <a href="../">MAIN</a>
+  <a href="../profile/">PROFILE</a>
+  <a class="active" href="../schedule/">SCHEDULE</a>
+  <a href="../song/">SONG BOOK</a>
+  <a href="../work/">UPBO</a>
+  <a href="../dress/">CLOSET</a>
+</nav>
+
+<main class="sg-main">
+  <section class="sg-hero">
+    <div class="sg-ghost" aria-hidden="true">22</div>
+    <p class="pf-signal"><i></i> WEEKLY FREQUENCY</p>
+    <h1>ON AIR<br><span>SCHEDULE</span></h1>
+    <p class="sg-sub">휴방은 <b>랜덤</b> — 신호가 끊겨도 놀라지 말기. 방송은 보통 <b>오후 10시 이후</b>에 켜져요. 달력의 신호를 확인해 주세요.</p>
+  </section>
+
+  <div class="pf-card rv" style="margin-bottom:22px">
+    <p class="pf-kick">FILE 01 <em>/ CALENDAR · 달력</em></p>
+    <div class="cal">
+      <div class="cal-head">
+        <button class="cal-nav" onclick="changeMonth(-1)" aria-label="이전 달">‹</button>
+        <span class="cal-title" id="calTitle"></span>
+        <button class="cal-nav" onclick="changeMonth(1)" aria-label="다음 달">›</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+  </div>
+
+  <div class="pf-card rv">
+    <p class="pf-kick">FILE 02 <em>/ UPCOMING · 다가오는 일정</em></p>
+    <div id="upcoming"><div class="sg-spin"></div></div>
+  </div>
+</main>
+
+<footer class="pf-footer">
+  <p>CONTENT / <b>JUST CHATTING · ASMR · FULL TRACKING</b></p>
+  <p>© 2026 <b>USISI Official</b> — <button class="sg-btn" data-ask type="button" style="margin-left:8px">📮 SEND SIGNAL</button></p>
+  <p class="pf-moo"><span>Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; </span></p>
+</footer>
+
+<!-- 날짜 상세 모달 -->
+<div id="schOv" onclick="if(event.target===this)closeModal()">
+  <div class="sch-m" id="schBody"></div>
+</div>
+
+<!-- SEND SIGNAL 문의 모달 -->
+<div id="pfMask"></div>
+<div id="pfSig" role="dialog" aria-modal="true" aria-label="문의 보내기">
+  <div class="frm">
+    <p class="sk"><i></i> SEND SIGNAL</p>
+    <h3>우시시에게 문의</h3>
+    <p class="sub">궁금한 것, 하고 싶은 말을 남겨주세요. (익명)</p>
+    <textarea id="pfTa" placeholder="주파수에 실어 보낼 내용을 입력해 주세요"></textarea>
+    <div class="row">
+      <button type="button" id="pfClose">CLOSE</button>
+      <button type="button" class="tx" id="pfSend">TRANSMIT ↗</button>
+    </div>
+  </div>
+  <div class="done">
+    <div class="st">✦</div>
+    <b>SIGNAL SENT</b>
+    <span>소중한 신호가 무사히 도착했어요</span>
+  </div>
+</div>
+<div id="pfFx" aria-hidden="true"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../supabase.js"></script>
+<script src="../js/signal.js"></script>
+<script>
+let currentYear, currentMonth, allSchedule = [];
+const DAYS = ['일','월','화','수','목','금','토'];
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function kind(t){ return t === '휴방' ? 'off' : 'on'; }
+function colorClass(s){ return 'c-' + (s.color || (kind(s.type)==='off'?'pink':'blue')); }
+
+async function init() {
+  const now = new Date(); currentYear = now.getFullYear(); currentMonth = now.getMonth();
+  try {
+    allSchedule = (typeof fetchAll === 'function') ? await fetchAll('schedule', { order:'date', asc:true }) : [];
+  } catch(e) { allSchedule = []; }
+  renderCalendar(); renderUpcoming();
+  if (typeof enableIframeAutoHeight === 'function') enableIframeAutoHeight();
+  if (window.SG) SG.ready();
+}
+function changeMonth(d) {
+  currentMonth += d;
+  if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+  if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+  renderCalendar();
+  if (typeof enableIframeAutoHeight === 'function') enableIframeAutoHeight();
+}
+function renderCalendar() {
+  document.getElementById('calTitle').textContent = `${currentYear}년 ${currentMonth+1}월`;
+  const grid = document.getElementById('calGrid');
+  const first = new Date(currentYear, currentMonth, 1);
+  const last = new Date(currentYear, currentMonth+1, 0);
+  const startDay = first.getDay();
+  const today = new Date();
+  let html = DAYS.map(d => `<div class="cal-dow">${d}</div>`).join('');
+  const prevLast = new Date(currentYear, currentMonth, 0).getDate();
+  for (let i = startDay-1; i >= 0; i--) html += `<div class="cal-cell other"><span class="cal-date">${prevLast-i}</span></div>`;
+  for (let d = 1; d <= last.getDate(); d++) {
+    const dateStr = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = today.getFullYear()===currentYear && today.getMonth()===currentMonth && today.getDate()===d;
+    const events = allSchedule.filter(s => s.date === dateStr);
+    const hl = events.some(e=>e.highlight);
+    let evHtml = events.map(e => {
+      const label = (e.time ? e.time+' ' : '') + (e.title || (kind(e.type)==='off'?'휴방':'방송'));
+      return `<div class="ev ${colorClass(e)}" title="${esc(label)}">${esc(label)}</div>`;
+    }).join('');
+    const cls = `cal-cell${isToday?' today':''}${events.length?' has':''}${hl?' hl':''}`;
+    const click = events.length ? `onclick="openModal('${dateStr}')"` : '';
+    html += `<div class="${cls}" ${click}><span class="cal-date">${d}</span>${evHtml}</div>`;
+  }
+  const totalCells = startDay + last.getDate();
+  const rem = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+  for (let i = 1; i <= rem; i++) html += `<div class="cal-cell other"><span class="cal-date">${i}</span></div>`;
+  grid.innerHTML = html;
+}
+function renderUpcoming() {
+  const today = new Date().toISOString().split('T')[0];
+  const upcoming = allSchedule.filter(s => s.date >= today).slice(0, 12);
+  const el = document.getElementById('upcoming');
+  if (!upcoming.length) { el.innerHTML = '<div class="sg-empty"><span class="ic">✦</span>다가오는 신호가 없어요 — 휴방은 랜덤이에요</div>'; return; }
+  el.innerHTML = upcoming.map(s => {
+    const dd = new Date(s.date + 'T00:00:00'); const k = kind(s.type);
+    const label = k==='off' ? 'OFF AIR' : 'ON AIR';
+    const times = [s.time, s.time2].filter(Boolean).join(' · ');
+    return `<div class="up ${colorClass(s)}" onclick="openModal('${s.date}')">
+      <div class="up-date">${String(dd.getMonth()+1).padStart(2,'0')}-${String(dd.getDate()).padStart(2,'0')} ${DAYS[dd.getDay()]}</div>
+      <div class="up-info"><div class="up-title">${esc(s.title || (k==='off'?'휴방':'방송'))}</div>${times?`<div class="up-time">${esc(times)}</div>`:''}</div>
+      <span class="up-b ${colorClass(s)}">${label}</span>
+    </div>`;
+  }).join('');
+}
+function openModal(dateStr) {
+  const events = allSchedule.filter(s => s.date === dateStr);
+  if (!events.length) return;
+  const dd = new Date(dateStr + 'T00:00:00');
+  let html = `<div class="md">✦ ${dateStr} (${DAYS[dd.getDay()]})</div>`;
+  events.forEach(s => {
+    const k = kind(s.type);
+    html += `<div class="mb ${colorClass(s)}">${k==='off'?'OFF AIR':'ON AIR'}</div>`;
+    html += `<div class="mp"><div class="pt">${s.time?esc(s.time):'1부'}</div><div class="pn">${esc(s.title || (k==='off'?'휴방':'방송'))}</div></div>`;
+    if (s.title2 || s.time2) {
+      html += `<div class="mp"><div class="pt">${s.time2?esc(s.time2):'2부'}</div><div class="pn">${esc(s.title2||'방송')}</div></div>`;
+    }
+    if (s.description) html += `<div class="mdsc">${esc(s.description)}</div>`;
+  });
+  html += `<button class="mc" onclick="closeModal()">CLOSE</button>`;
+  document.getElementById('schBody').innerHTML = html;
+  document.getElementById('schOv').classList.add('on');
+}
+function closeModal(){ document.getElementById('schOv').classList.remove('on'); }
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#06122a">
+<title>SONG BOOK | 우시시 USISI Official</title>
+<meta name="description" content="우시시 노래책 — 노래는 안 하지만 듣는 노래는 많아요">
+<link rel="icon" type="image/jpeg" href="https://profile.img.sooplive.co.kr/LOGO/nw/nwakdifl1/nwakdifl1.jpg">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/signal.css">
+<style>
+/* ── SONG BOOK 전용 ── */
+.sig-song{display:flex;align-items:center;gap:20px;padding:22px;border:1px solid var(--pf-line);background:rgba(169,213,255,.05);margin-bottom:22px}
+.sig-song .pl{display:grid;place-items:center;width:58px;height:58px;flex:0 0 auto;border:1px solid rgba(207,233,255,.58);border-radius:50%;color:#cae7ff;background:rgba(169,213,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);font-size:15px}
+body.day .sig-song .pl{color:#2f6fb4;border-color:#2f6fb4}
+.sig-song small{display:block;margin-bottom:6px;color:var(--pf-tx3);font-size:10.5px;font-weight:900;letter-spacing:.15em}
+.sig-song b{color:var(--pf-tx);font-size:18px;font-weight:800}
+.sig-song .note{margin-left:auto;color:var(--pf-tx3);font-size:12.5px;font-weight:700;text-align:right;line-height:1.7}
+.sig-song .note em{font-style:normal;color:#9dccfb}
+body.day .sig-song .note em{color:#2f6fb4}
+/* 필터 */
+.flt{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.srch{flex:1;min-width:220px;padding:13px 17px;border:1px solid var(--pf-line);background:rgba(169,213,255,.06);color:var(--pf-tx);font-family:inherit;font-size:14.5px}
+.srch::placeholder{color:var(--pf-tx3)}
+.srch:focus{outline:1px solid var(--pf-acc)}
+body.day .srch{background:rgba(47,111,180,.06)}
+.gtabs{display:flex;gap:7px;flex-wrap:wrap}
+.gt{padding:10px 15px;border:1px solid var(--pf-line);background:rgba(169,213,255,.05);color:var(--pf-tx3);font-size:12px;font-weight:900;letter-spacing:.1em;cursor:pointer;transition:.2s}
+.gt:hover{color:var(--pf-tx)}
+.gt.active{background:rgba(143,199,255,.18);border-color:rgba(175,214,255,.6);color:var(--pf-tx)}
+body.day .gt.active{background:rgba(47,111,180,.14);border-color:#2f6fb4}
+.cnt{margin:16px 0 10px;color:var(--pf-tx3);font-size:11.5px;font-weight:900;letter-spacing:.14em}
+/* 테이블 */
+.tbl{width:100%;border-collapse:collapse}
+.tbl thead th{text-align:left;padding:12px 12px;color:#9dccfb;font-size:11px;font-weight:900;letter-spacing:.16em;border-bottom:1px solid var(--pf-line);border-top:1px solid var(--pf-line)}
+body.day .tbl thead th{color:#2f6fb4}
+.tbl tbody td{padding:14px 12px;border-bottom:1px dashed var(--pf-line);color:var(--pf-tx);font-size:14.5px;vertical-align:middle}
+.tbl tbody tr:hover td{background:rgba(143,199,255,.06)}
+.s-num{color:var(--pf-tx3);font-family:"Arial Black",sans-serif;font-size:12px;width:44px}
+.s-title{font-weight:800}
+.s-artist{color:var(--pf-tx2)}
+.s-genre{display:inline-block;padding:4px 11px;border:1px solid var(--pf-line);color:var(--pf-tx2);font-size:11px;font-weight:900;letter-spacing:.1em;white-space:nowrap}
+.lv{display:inline-flex;gap:3px;align-items:flex-end}
+.lv i{width:5px;background:rgba(169,213,255,.14);border:1px solid var(--pf-line)}
+.lv i:nth-child(1){height:7px}.lv i:nth-child(2){height:10px}.lv i:nth-child(3){height:13px}.lv i:nth-child(4){height:16px}.lv i:nth-child(5){height:19px}
+.lv i.on{background:linear-gradient(180deg,var(--pf-ice),rgba(143,199,255,.6));border-color:rgba(175,214,255,.6);box-shadow:0 0 8px rgba(133,200,255,.35)}
+body.day .lv i.on{background:#2f6fb4}
+/* 페이지네이션 */
+.pgn{display:flex;justify-content:center;gap:7px;margin-top:18px;flex-wrap:wrap}
+.pg{width:36px;height:36px;border:1px solid var(--pf-line);background:rgba(169,213,255,.05);color:var(--pf-tx2);font-size:12px;font-weight:900;cursor:pointer;transition:.2s}
+.pg:hover{color:var(--pf-tx)}
+.pg.active{background:rgba(143,199,255,.18);border-color:rgba(175,214,255,.6);color:var(--pf-tx)}
+body.day .pg.active{background:rgba(47,111,180,.14);border-color:#2f6fb4}
+@media (max-width:820px){
+  .hide-m{display:none}
+  .tbl thead th{padding:10px 7px;font-size:10px}
+  .tbl tbody td{padding:12px 7px;font-size:13.5px}
+  .s-num{width:28px;font-size:11px}
+  .sig-song{flex-wrap:wrap}
+  .sig-song .note{margin-left:0;text-align:left;width:100%}
+}
+</style>
+</head>
+
+<body class="sg">
+<script>if(localStorage.getItem('usisi-mode')==='day')document.body.classList.add('day');</script>
+<div class="pf-gridbg" aria-hidden="true"></div>
+<div id="pfStars" aria-hidden="true"></div>
+
+<header class="pf-header">
+  <a class="wordmark compact" href="../" aria-label="우시시 메인">
+    <span class="mark-star" aria-hidden="true">✦</span>
+    <span>USISI</span>
+  </a>
+  <div class="c3-frequency">FREQUENCY<b>04.10 / 22:00</b></div>
+  <nav class="main-nav" aria-label="주요 메뉴">
+    <a href="../">MAIN</a>
+    <a href="../profile/">PROFILE</a>
+    <a href="../schedule/">SCHEDULE</a>
+    <a class="active" href="../song/">SONG BOOK</a>
+    <a href="../work/">UPBO</a>
+    <a href="../dress/">CLOSET</a>
+  </nav>
+  <div class="pf-hright">
+    <button class="pf-mode" id="pfMode" type="button" aria-label="낮/밤 모드 전환"><span class="mi">☾</span><span class="mt">NIGHT</span></button>
+    <a class="pf-enter" href="https://www.sooplive.com/station/nwakdifl1" target="_blank" rel="noreferrer">ENTER CHANNEL <span aria-hidden="true">↗</span></a>
+  </div>
+</header>
+
+<nav class="pf-subnav" aria-label="모바일 메뉴">
+  <a href="../">MAIN</a>
+  <a href="../profile/">PROFILE</a>
+  <a href="../schedule/">SCHEDULE</a>
+  <a class="active" href="../song/">SONG BOOK</a>
+  <a href="../work/">UPBO</a>
+  <a href="../dress/">CLOSET</a>
+</nav>
+
+<main class="sg-main">
+  <section class="sg-hero">
+    <div class="sg-ghost" aria-hidden="true">♪</div>
+    <p class="pf-signal"><i></i> NOW TUNED</p>
+    <h1>SONG<br><span>BOOK</span></h1>
+    <p class="sg-sub">노래 방송은 <b>안 해요</b> — 부끄러움 92%의 젖소라서. 대신 밤의 주파수에 어울리는 곡들을 여기 모아둘게요.</p>
+  </section>
+
+  <div class="sig-song rv">
+    <span class="pl" aria-hidden="true">▶</span>
+    <div>
+      <small>SIGNATURE SONG</small>
+      <b data-hook="signature-song">백넘버 — 눈깜빡임</b>
+    </div>
+    <p class="note">우시시의 시그니처 송<br><em>밤에 들으면 더 좋아요</em></p>
+  </div>
+
+  <div class="pf-card rv">
+    <p class="pf-kick">FILE 01 <em>/ TRACK LIST · 노래책</em></p>
+    <div class="flt">
+      <input class="srch" id="search" placeholder="✦ 곡명 · 아티스트 검색">
+    </div>
+    <div class="gtabs" id="genre-tabs"></div>
+    <div class="cnt" id="count"></div>
+    <div style="overflow-x:auto">
+      <table class="tbl">
+        <thead><tr><th class="s-num">NO</th><th>TITLE</th><th class="hide-m">ARTIST</th><th>GENRE</th><th>LEVEL</th></tr></thead>
+        <tbody id="song-body"><tr><td colspan="5"><div class="sg-spin"></div></td></tr></tbody>
+      </table>
+    </div>
+    <div class="pgn" id="pagination"></div>
+  </div>
+</main>
+
+<footer class="pf-footer">
+  <p>CONTENT / <b>JUST CHATTING · ASMR · FULL TRACKING</b></p>
+  <p>© 2026 <b>USISI Official</b> — <button class="sg-btn" data-ask type="button" style="margin-left:8px">📮 SEND SIGNAL</button></p>
+  <p class="pf-moo"><span>Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; </span></p>
+</footer>
+
+<!-- SEND SIGNAL 문의 모달 -->
+<div id="pfMask"></div>
+<div id="pfSig" role="dialog" aria-modal="true" aria-label="문의 보내기">
+  <div class="frm">
+    <p class="sk"><i></i> SEND SIGNAL</p>
+    <h3>우시시에게 문의</h3>
+    <p class="sub">궁금한 것, 하고 싶은 말을 남겨주세요. (익명)</p>
+    <textarea id="pfTa" placeholder="주파수에 실어 보낼 내용을 입력해 주세요"></textarea>
+    <div class="row">
+      <button type="button" id="pfClose">CLOSE</button>
+      <button type="button" class="tx" id="pfSend">TRANSMIT ↗</button>
+    </div>
+  </div>
+  <div class="done">
+    <div class="st">✦</div>
+    <b>SIGNAL SENT</b>
+    <span>소중한 신호가 무사히 도착했어요</span>
+  </div>
+</div>
+<div id="pfFx" aria-hidden="true"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../supabase.js"></script>
+<script src="../js/signal.js"></script>
+<script>
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+const GENRES = ['전체','K-Pop','J-Pop','Pop','발라드','기타'];
+const PAGE = 30;
+let songs = [], curGenre = '전체', curPage = 1, keyword = '';
+
+async function init() {
+  try {
+    songs = (typeof fetchAll === 'function') ? await fetchAll('songs', { order:'id', asc:true }) : [];
+  } catch(e) { songs = []; }
+  try{
+    if (typeof db !== 'undefined' && db) {
+      const res = await db.from('profile').select('data').eq('id',1).single();
+      const pf = res && res.data && res.data.data;
+      if (pf && pf['signature-song']) document.querySelectorAll('[data-hook="signature-song"]').forEach(el=>el.textContent=pf['signature-song']);
+    }
+  }catch(e){}
+  renderGenres(); render();
+  if (typeof enableIframeAutoHeight === 'function') enableIframeAutoHeight();
+  if (window.SG) SG.ready();
+}
+function renderGenres() {
+  document.getElementById('genre-tabs').innerHTML = GENRES.map(g =>
+    `<button class="gt ${g===curGenre?'active':''}" onclick="selGenre('${g}')">${g}</button>`).join('');
+}
+function selGenre(g){ curGenre=g; curPage=1; renderGenres(); render(); if (typeof enableIframeAutoHeight==='function') enableIframeAutoHeight(); }
+
+function filtered() {
+  return songs.filter(s => {
+    const okG = curGenre==='전체' || s.genre===curGenre;
+    const q = keyword.toLowerCase();
+    const okQ = !q || (s.title||'').toLowerCase().includes(q) || (s.artist||'').toLowerCase().includes(q);
+    return okG && okQ;
+  });
+}
+function render() {
+  const list = filtered();
+  const totalPages = Math.max(1, Math.ceil(list.length / PAGE));
+  if (curPage > totalPages) curPage = 1;
+  const pageItems = list.slice((curPage-1)*PAGE, curPage*PAGE);
+  document.getElementById('count').textContent = `TOTAL ${list.length} TRACKS · PAGE ${curPage}/${totalPages}`;
+  const body = document.getElementById('song-body');
+  if (!list.length) { body.innerHTML = '<tr><td colspan="5"><div class="sg-empty"><span class="ic">♪</span>아직 등록된 트랙이 없어요</div></td></tr>'; document.getElementById('pagination').innerHTML=''; return; }
+  body.innerHTML = pageItems.map((s, i) => {
+    const num = (curPage-1)*PAGE + i + 1;
+    const diff = parseInt(s.difficulty)||0;
+    let bars=''; for(let k=1;k<=5;k++) bars+=`<i class="${k<=diff?'on':''}"></i>`;
+    return `<tr>
+      <td class="s-num">${String(num).padStart(2,'0')}</td>
+      <td class="s-title">${esc(s.title)}</td>
+      <td class="hide-m s-artist">${esc(s.artist)||'-'}</td>
+      <td><span class="s-genre">${esc(s.genre)||'기타'}</span></td>
+      <td><span class="lv">${bars}</span></td>
+    </tr>`;
+  }).join('');
+  const pg = document.getElementById('pagination'); pg.innerHTML='';
+  if (totalPages>1) for(let i=1;i<=totalPages;i++){
+    const b=document.createElement('button'); b.className='pg'+(i===curPage?' active':''); b.textContent=i;
+    b.onclick=()=>{ curPage=i; render(); if (typeof enableIframeAutoHeight==='function') enableIframeAutoHeight(); window.scrollTo(0,0); };
+    pg.appendChild(b);
+  }
+}
+document.getElementById('search').addEventListener('input', e=>{ keyword=e.target.value.trim(); curPage=1; render(); });
+init();
+</script>
+</body>
+</html>

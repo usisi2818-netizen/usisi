@@ -1,0 +1,822 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#06122a">
+<title>PROFILE | 우시시 USISI Official</title>
+<meta name="description" content="달빛에 접속한 우시시의 퍼스널 파일 — 프로필 페이지">
+<link rel="icon" type="image/jpeg" href="https://profile.img.sooplive.co.kr/LOGO/nw/nwakdifl1/nwakdifl1.jpg">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+/* ============================================================
+   USISI — PROFILE (PERSONAL FILE)
+   메인 시안 03 "NIGHT SIGNAL" 테마 상속 · css/style.css 뒤에 로드
+   ============================================================ */
+:root{
+  --pf-tx:#EAF4FF;
+  --pf-tx2:rgba(226,240,255,.68);
+  --pf-tx3:rgba(255,255,255,.44);
+  --pf-glass:rgba(5,14,29,.58);
+  --pf-glass2:rgba(9,20,40,.55);
+  --pf-line:rgba(201,227,255,.22);
+  --pf-acc:#8fc7ff;
+  --pf-ice:#d4e9ff;
+  --pf-glow:#85c8ff;
+  --pf-stroke:rgba(221,239,255,.9);
+  --pf-ghost:rgba(179,218,255,.13);
+}
+body.day{
+  --pf-tx:#132741;
+  --pf-tx2:rgba(19,39,65,.74);
+  --pf-tx3:rgba(19,39,65,.5);
+  --pf-glass:rgba(255,255,255,.62);
+  --pf-glass2:rgba(255,255,255,.5);
+  --pf-line:rgba(30,70,120,.26);
+  --pf-acc:#2f6fb4;
+  --pf-ice:#2f6fb4;
+  --pf-glow:#7db6ee;
+  --pf-stroke:rgba(24,52,88,.85);
+  --pf-ghost:rgba(24,60,110,.14);
+}
+
+/* ---------- 페이지 배경 (밤/낮 고정 배경 · body 배경 레이어) ---------- */
+body.pf-page{
+  min-height:100svh;
+  color:var(--pf-tx);
+  background-color:var(--navy-deep);
+  background-image:
+    linear-gradient(90deg, rgba(2,7,18,.93) 0%, rgba(3,10,25,.7) 52%, rgba(2,7,18,.9) 100%),
+    url("../assets/optimized/usisi-night.webp");
+  background-repeat:no-repeat,no-repeat;
+  background-position:center,center;
+  background-size:cover,cover;
+  background-attachment:fixed,fixed;
+  transition:color .3s;
+}
+body.pf-page.day{
+  background-color:#eaf3fd;
+  background-image:
+    linear-gradient(90deg, rgba(240,248,255,.92) 0%, rgba(242,249,255,.7) 52%, rgba(238,247,255,.9) 100%),
+    url("../assets/optimized/usisi-day.webp");
+}
+.pf-gridbg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.14;
+  background-image:
+    linear-gradient(rgba(190,224,255,.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(190,224,255,.16) 1px, transparent 1px);
+  background-size:110px 110px;
+  mask-image:linear-gradient(90deg, transparent 30%, black);
+  -webkit-mask-image:linear-gradient(90deg, transparent 30%, black);
+}
+body.day .pf-gridbg{opacity:.1;background-image:
+    linear-gradient(rgba(40,90,150,.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(40,90,150,.18) 1px, transparent 1px)}
+
+/* ---------- 헤더 (메인 c3-header와 동일 골격 · 고정) ---------- */
+.pf-header{
+  position:fixed;z-index:40;top:0;right:0;left:0;
+  display:grid;grid-template-columns:.75fr .7fr 2fr .9fr;align-items:center;
+  height:104px;padding:0 4.3vw;
+  border-bottom:1px solid var(--pf-line);
+  background:rgba(3,8,18,.62);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+}
+body.day .pf-header{background:rgba(240,248,255,.66)}
+body.day .wordmark{color:#132741}
+body.day .c3-frequency{color:rgba(19,39,65,.5)}
+body.day .c3-frequency b{color:#1f4a7d}
+body.day .main-nav a{color:rgba(19,39,65,.55)}
+body.day .main-nav a:hover,body.day .main-nav a.active{color:#132741}
+body.day .main-nav a.active::after{background:#2f6fb4}
+.pf-hright{justify-self:end;display:flex;align-items:center;gap:18px}
+.pf-mode{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 13px;border:1px solid var(--pf-line);
+  color:var(--pf-tx2);background:rgba(169,213,255,.06);
+  font-size:11px;font-weight:900;letter-spacing:.14em;cursor:pointer;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:.2s;
+}
+.pf-mode:hover{color:var(--pf-tx);border-color:var(--pf-acc)}
+.pf-enter{
+  padding:14px 0;border-bottom:1px solid #afd6ff;color:#dceeff;
+  font-size:13px;font-weight:900;letter-spacing:.09em;white-space:nowrap;
+}
+body.day .pf-enter{color:#1f4a7d;border-bottom-color:#2f6fb4}
+
+/* 모바일 서브 내브 (가로 스크롤 스트립) */
+.pf-subnav{display:none}
+
+/* ---------- 본문 컨테이너 ---------- */
+.pf-main{position:relative;z-index:1;width:min(1180px,88vw);margin:0 auto;padding:168px 0 90px}
+
+/* ---------- 히어로 (PERSONAL FILE) ---------- */
+.pf-hero{
+  position:relative;display:grid;grid-template-columns:1.05fr .95fr;
+  align-items:end;gap:2vw;min-height:520px;margin-bottom:64px;
+}
+.pf-copy{position:relative;padding-bottom:34px}
+.pf-signal{display:flex;align-items:center;gap:12px;margin:0 0 22px;color:#b9dcff;font-size:12px;font-weight:900;letter-spacing:.17em}
+body.day .pf-signal{color:#2f6fb4}
+.pf-signal i{display:block;width:9px;height:9px;border-radius:50%;background:#a4d4ff;box-shadow:0 0 18px var(--pf-glow)}
+body.day .pf-signal i{background:#2f6fb4}
+.pf-ghost{
+  position:absolute;z-index:-1;top:-90px;left:-20px;
+  color:transparent;font-family:"Arial Black",sans-serif;
+  font-size:clamp(200px,20vw,380px);font-weight:900;line-height:1;
+  -webkit-text-stroke:1px var(--pf-ghost);pointer-events:none;user-select:none;
+}
+.pf-hero h1{
+  margin:0;font-family:"Arial Black",Impact,sans-serif;
+  font-size:clamp(64px,8.6vw,148px);font-weight:900;
+  letter-spacing:-.08em;line-height:.82;color:var(--pf-tx);
+}
+.pf-hero h1 span{color:transparent;-webkit-text-stroke:2px var(--pf-stroke)}
+.pf-nm{display:flex;align-items:baseline;gap:18px;margin-top:30px}
+.pf-nm b{font-size:clamp(28px,2.2vw,40px);letter-spacing:-.05em;color:var(--pf-tx)}
+.pf-nm span{color:#9dccfb;font-size:14px;font-weight:900;letter-spacing:.22em;text-transform:uppercase}
+body.day .pf-nm span{color:#2f6fb4}
+.pf-quote{
+  margin:20px 0 26px;color:var(--pf-tx2);
+  font-family:Georgia,serif;font-style:italic;
+  font-size:clamp(16px,1.2vw,20px);letter-spacing:.04em;line-height:1.7;
+}
+.pf-chips{display:flex;gap:10px;flex-wrap:wrap}
+.pf-chip{
+  padding:10px 15px;border:1px solid var(--pf-line);
+  background:rgba(169,213,255,.06);color:var(--pf-tx2);
+  font-size:12px;font-weight:900;letter-spacing:.13em;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.pf-chip b{color:var(--pf-ice);margin-left:6px}
+/* 캐릭터 컷아웃 */
+.pf-char{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-height:380px;padding-bottom:48px}
+.pf-char::before{ /* 바닥 광원 */
+  content:'';position:absolute;left:6%;right:6%;bottom:6px;height:120px;
+  background:radial-gradient(60% 100% at 50% 100%, rgba(133,200,255,.28), transparent 70%);
+  filter:blur(6px);pointer-events:none;
+}
+body.day .pf-char::before{background:radial-gradient(60% 100% at 50% 100%, rgba(90,150,220,.25), transparent 70%)}
+.pf-char::after{ /* 수평선 */
+  content:'';position:absolute;left:0;right:0;bottom:6px;height:1px;
+  background:linear-gradient(90deg, transparent, var(--pf-line) 18%, var(--pf-line) 82%, transparent);
+}
+.pf-av{position:relative;width:min(300px,62%);aspect-ratio:1/1;cursor:pointer;z-index:1}
+.pf-av img{position:relative;z-index:2;width:100%;height:100%;border-radius:50%;object-fit:cover;
+  border:1px solid rgba(207,233,255,.6);
+  box-shadow:0 0 0 7px rgba(169,213,255,.06), 0 24px 60px rgba(2,8,20,.6), 0 0 48px rgba(133,200,255,.22);}
+body.day .pf-av img{border-color:#2f6fb4;box-shadow:0 0 0 7px rgba(47,111,180,.08), 0 24px 50px rgba(30,70,120,.25)}
+.pf-av .sweep{position:absolute;inset:-13px;border-radius:50%;z-index:1;
+  background:conic-gradient(from 0deg, rgba(212,233,255,0) 0deg, rgba(212,233,255,.85) 40deg, rgba(212,233,255,0) 90deg, rgba(212,233,255,0) 360deg);
+  -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 1.5px));
+  mask:radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 1.5px));
+  animation:pf-sweep 6.5s linear infinite;}
+body.day .pf-av .sweep{background:conic-gradient(from 0deg, rgba(47,111,180,0) 0deg, rgba(47,111,180,.8) 40deg, rgba(47,111,180,0) 90deg, rgba(47,111,180,0) 360deg)}
+@keyframes pf-sweep{to{transform:rotate(360deg)}}
+.pf-av .orbit{position:absolute;inset:-30px;border-radius:50%;border:1px dashed rgba(201,227,255,.3);animation:pf-orbit 30s linear infinite reverse}
+body.day .pf-av .orbit{border-color:rgba(47,111,180,.35)}
+.pf-av .orbit::after{content:'';position:absolute;top:-3.5px;left:50%;margin-left:-3.5px;width:7px;height:7px;border-radius:50%;background:#a4d4ff;box-shadow:0 0 12px var(--pf-glow)}
+@keyframes pf-orbit{to{transform:rotate(360deg)}}
+.pf-av .tk{position:absolute;width:15px;height:15px;border-color:rgba(201,227,255,.5);border-style:solid;border-width:0;z-index:0}
+.pf-av .tk.t1{top:-38px;left:-38px;border-top-width:1px;border-left-width:1px}
+.pf-av .tk.t2{top:-38px;right:-38px;border-top-width:1px;border-right-width:1px}
+.pf-av .tk.t3{bottom:-38px;left:-38px;border-bottom-width:1px;border-left-width:1px}
+.pf-av .tk.t4{bottom:-38px;right:-38px;border-bottom-width:1px;border-right-width:1px}
+body.day .pf-av .tk{border-color:rgba(47,111,180,.5)}
+.pf-av.noimg img{visibility:hidden}
+.pf-av.noimg::before{content:'🐄';position:absolute;inset:0;z-index:2;display:grid;place-items:center;font-size:64px;border-radius:50%;background:linear-gradient(150deg,#14243f,#081226);border:1px solid rgba(207,233,255,.5)}
+body.day .pf-av.noimg::before{background:linear-gradient(150deg,#dcecfa,#c3dcf2)}
+.pf-avcap{margin:26px 0 0;color:var(--pf-tx3);font-size:11px;font-weight:900;letter-spacing:.2em}
+.pf-avcap b{color:#9dccfb}
+body.day .pf-avcap b{color:#2f6fb4}
+.pf-char .st{position:absolute;color:var(--pf-acc);font-size:15px;opacity:.8;animation:pf-tw 3.2s ease-in-out infinite;pointer-events:none}
+.pf-char .st.s1{top:12%;left:8%}
+.pf-char .st.s2{top:4%;right:14%;font-size:11px;animation-delay:1.1s}
+.pf-char .st.s3{top:38%;right:4%;font-size:13px;animation-delay:.5s}
+@keyframes pf-tw{0%,100%{opacity:.25}50%{opacity:.95}}
+
+/* ---------- 카드 그리드 ---------- */
+.pf-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.pf-card{
+  position:relative;min-width:0;padding:34px 36px 36px;
+  border:1px solid var(--pf-line);
+  background:var(--pf-glass);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.pf-card.w2{grid-column:span 2}
+.pf-kick{
+  display:flex;align-items:baseline;gap:12px;margin:0 0 22px;
+  color:#9dccfb;font-size:11px;font-weight:900;letter-spacing:.18em;
+}
+body.day .pf-kick{color:#2f6fb4}
+.pf-kick em{font-style:normal;color:var(--pf-tx3);letter-spacing:.14em}
+.pf-kick::after{content:'';flex:1;height:1px;background:var(--pf-line);align-self:center}
+
+/* BASIC DATA — 도시에 행 */
+.pf-rows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 34px}
+.pf-row{
+  display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  padding:13px 2px;border-bottom:1px dashed var(--pf-line);
+}
+.pf-row .k{color:var(--pf-tx3);font-size:11.5px;font-weight:900;letter-spacing:.14em;flex:0 0 auto}
+.pf-row .v{color:var(--pf-tx);font-size:16px;font-weight:800;text-align:right;letter-spacing:.01em}
+.pf-row .v small{display:inline-block;margin-left:7px;padding:2px 7px;border:1px solid var(--pf-line);color:#9dccfb;font-size:11px;font-weight:900;letter-spacing:.1em;vertical-align:2px}
+body.day .pf-row .v small{color:#2f6fb4}
+
+/* WAVEFORM — 능력치 바 */
+.pf-wave{display:flex;flex-direction:column;gap:17px}
+.pf-wv{display:grid;grid-template-columns:118px 1fr 52px;align-items:center;gap:14px}
+.pf-wv .k{color:var(--pf-tx2);font-size:14.5px;font-weight:800;letter-spacing:.02em}
+.pf-wv .tr{height:8px;border:1px solid var(--pf-line);background:rgba(169,213,255,.05);overflow:hidden}
+.pf-wv .fl{height:100%;width:0;background:linear-gradient(90deg, rgba(143,199,255,.55), var(--pf-ice));box-shadow:0 0 14px rgba(133,200,255,.35);transition:width 1.1s cubic-bezier(.2,.7,.2,1)}
+body.day .pf-wv .fl{background:linear-gradient(90deg,#7db6ee,#2f6fb4)}
+.pf-wv .p{color:var(--pf-ice);font-family:"Arial Black",sans-serif;font-size:15px;text-align:right;letter-spacing:0}
+.pf-wnote{margin:20px 0 0;color:var(--pf-tx3);font-size:12px;font-weight:800;letter-spacing:.1em}
+
+/* POINT ITEM / MOTIF */
+.pf-tags{display:flex;gap:9px;flex-wrap:wrap}
+.pf-tag{
+  padding:11px 15px;border:1px solid var(--pf-line);
+  color:var(--pf-tx);background:rgba(169,213,255,.05);
+  font-size:14px;font-weight:800;letter-spacing:.02em;
+}
+.pf-motif{margin:22px 0 0;color:var(--pf-tx3);font-size:11.5px;font-weight:900;letter-spacing:.16em}
+.pf-motif b{color:#9dccfb;letter-spacing:.16em}
+body.day .pf-motif b{color:#2f6fb4}
+
+/* FAN PROTOCOL */
+.pf-proto{display:flex;flex-direction:column;gap:16px}
+.pf-fanline{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+.pf-fanline .big{font-family:"Arial Black",sans-serif;font-size:34px;letter-spacing:-.02em;color:var(--pf-tx)}
+.pf-fanline .suf{color:var(--pf-ice);font-family:"Arial Black",sans-serif;font-size:22px}
+.pf-fanline .cap{color:var(--pf-tx3);font-size:12px;font-weight:900;letter-spacing:.14em}
+.pf-rule{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1px solid var(--pf-line);background:rgba(169,213,255,.05);color:var(--pf-tx2);font-size:14.5px;font-weight:700}
+.pf-rule b{color:var(--pf-ice)}
+.pf-like .k{color:var(--pf-tx3);font-size:11.5px;font-weight:900;letter-spacing:.16em;margin-bottom:9px;display:block}
+.pf-like .tr{height:8px;border:1px solid var(--pf-line);background:rgba(169,213,255,.05);overflow:hidden}
+.pf-like .fl{height:100%;width:0;background:linear-gradient(90deg,#fff,var(--pf-ice));box-shadow:0 0 14px rgba(133,200,255,.4);transition:width 1.2s ease}
+body.day .pf-like .fl{background:linear-gradient(90deg,#7db6ee,#2f6fb4)}
+.pf-like .cap{margin-top:9px;color:var(--pf-tx2);font-size:14px;font-weight:800}
+
+/* WEEKLY SIGNAL */
+.pf-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
+.pf-day{
+  border:1px solid var(--pf-line);background:rgba(169,213,255,.05);
+  padding:16px 6px 14px;text-align:center;
+}
+.pf-day b{display:block;color:#9dccfb;font-size:12px;font-weight:900;letter-spacing:.16em}
+body.day .pf-day b{color:#2f6fb4}
+.pf-day i{font-style:normal;display:block;margin:9px 0 7px;font-size:16px}
+.pf-day span{display:block;color:var(--pf-tx);font-family:"Arial Black",sans-serif;font-size:14px;letter-spacing:.02em}
+.pf-day em{display:block;margin-top:4px;color:var(--pf-tx3);font-size:10.5px;font-weight:900;letter-spacing:.12em;font-style:normal}
+.pf-wknote{display:flex;align-items:center;gap:12px;margin:18px 0 0;color:var(--pf-tx2);font-size:14px;font-weight:700}
+.pf-wknote i{display:block;width:8px;height:8px;border-radius:50%;background:#a4d4ff;box-shadow:0 0 14px var(--pf-glow);flex:0 0 auto}
+
+/* LOG — 타임라인 */
+.pf-log{position:relative;display:flex;flex-direction:column;gap:0;margin-left:5px}
+.pf-log::before{content:'';position:absolute;top:8px;bottom:8px;left:4px;width:1px;background:var(--pf-line)}
+.pf-lg{position:relative;padding:0 0 22px 26px}
+.pf-lg:last-child{padding-bottom:2px}
+.pf-lg::before{content:'';position:absolute;top:6px;left:0;width:9px;height:9px;border-radius:50%;background:#a4d4ff;box-shadow:0 0 12px rgba(133,200,255,.7)}
+body.day .pf-lg::before{background:#2f6fb4}
+.pf-lg .d{color:#9dccfb;font-size:11px;font-weight:900;letter-spacing:.16em}
+body.day .pf-lg .d{color:#2f6fb4}
+.pf-lg .t{margin-top:5px;color:var(--pf-tx);font-size:16.5px;font-weight:800}
+.pf-lg .s{margin-top:3px;color:var(--pf-tx3);font-size:13px;font-weight:600}
+
+/* SIGNATURE SONG */
+.pf-song{display:flex;align-items:center;gap:20px;padding:22px;border:1px solid var(--pf-line);background:rgba(169,213,255,.05)}
+.pf-song .pl{
+  display:grid;place-items:center;width:58px;height:58px;flex:0 0 auto;
+  border:1px solid rgba(207,233,255,.58);border-radius:50%;
+  color:#cae7ff;background:rgba(169,213,255,.08);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  font-size:15px;cursor:pointer;transition:.2s;
+}
+.pf-song .pl:hover{background:rgba(169,213,255,.2)}
+body.day .pf-song .pl{color:#2f6fb4;border-color:#2f6fb4}
+.pf-song small{display:block;margin-bottom:6px;color:var(--pf-tx3);font-size:10.5px;font-weight:900;letter-spacing:.15em}
+.pf-song b{color:var(--pf-tx);font-size:18px;font-weight:800;letter-spacing:.01em}
+.pf-snote{margin:18px 0 0;color:var(--pf-tx3);font-size:13px;font-weight:700;line-height:1.7}
+.pf-snote b{color:#9dccfb}
+body.day .pf-snote b{color:#2f6fb4}
+
+/* ARCHIVE (VOD) */
+.pf-vods{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.pf-vod{
+  position:relative;aspect-ratio:16/9;border:1px solid var(--pf-line);
+  background:linear-gradient(140deg, rgba(12,26,50,.8), rgba(4,10,22,.9));
+  display:grid;place-items:center;overflow:hidden;
+}
+body.day .pf-vod{background:linear-gradient(140deg, rgba(220,236,252,.9), rgba(200,224,246,.9))}
+.pf-vod .rec{position:absolute;top:12px;left:14px;display:flex;align-items:center;gap:7px;color:var(--pf-tx3);font-size:10.5px;font-weight:900;letter-spacing:.16em}
+.pf-vod .rec i{display:block;width:7px;height:7px;border-radius:50%;background:#ff8f9f}
+.pf-vod .no{position:absolute;right:12px;bottom:8px;color:transparent;font-family:"Arial Black",sans-serif;font-size:44px;-webkit-text-stroke:1px var(--pf-ghost)}
+.pf-vod .pl{
+  display:grid;place-items:center;width:52px;height:52px;border-radius:50%;
+  border:1px solid rgba(207,233,255,.5);color:#cae7ff;background:rgba(169,213,255,.08);font-size:13px;
+}
+body.day .pf-vod .pl{color:#2f6fb4;border-color:#2f6fb4}
+.pf-vnote{margin:16px 0 0;color:var(--pf-tx3);font-size:12.5px;font-weight:800;letter-spacing:.06em}
+.pf-vodwrap{min-width:0}
+.pf-vodfr{position:relative;aspect-ratio:16/9;border:1px solid var(--pf-line);background:#04101F;overflow:hidden}
+.pf-vodfr iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.pf-vodtt{margin:9px 0 0;color:var(--pf-tx2);font-size:13px;font-weight:800;letter-spacing:.04em}
+
+/* COMMS */
+.pf-comms{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.pf-lk{
+  display:flex;flex-direction:column;gap:8px;padding:20px 18px;
+  border:1px solid var(--pf-line);background:rgba(169,213,255,.05);
+  transition:.2s;min-width:0;
+}
+.pf-lk:hover{background:rgba(169,213,255,.14);transform:translateY(-3px)}
+.pf-lk small{color:var(--pf-tx3);font-size:10.5px;font-weight:900;letter-spacing:.16em}
+.pf-lk b{color:var(--pf-tx);font-size:15.5px;font-weight:900;letter-spacing:.04em}
+.pf-lk.hi{background:rgba(143,199,255,.16);border-color:rgba(175,214,255,.6);cursor:pointer;text-align:left}
+.pf-lk.hi:hover{background:rgba(143,199,255,.28)}
+body.day .pf-lk.hi{background:rgba(47,111,180,.14);border-color:#2f6fb4}
+
+/* ---------- 푸터 (메인 c3-footer 상속형 · 정적) ---------- */
+.pf-footer{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:auto auto 1fr;align-items:center;gap:4vw;
+  height:96px;padding:0 4.5vw;margin-top:20px;
+  border-top:1px solid var(--pf-line);
+  background:var(--navy-glass);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+}
+body.day .pf-footer{background:rgba(240,248,255,.7)}
+.pf-footer p{margin:0;color:var(--pf-tx3);font-size:11px;font-weight:800;letter-spacing:.12em}
+.pf-footer b{color:var(--pf-tx)}
+.pf-moo{justify-self:end;overflow:hidden;max-width:340px}
+.pf-moo span{display:inline-block;white-space:nowrap;color:rgba(155,205,252,.56);font-family:Georgia,serif;font-size:15px;font-style:italic;letter-spacing:.06em;animation:pf-moo 16s linear infinite}
+body.day .pf-moo span{color:rgba(47,111,180,.6)}
+@keyframes pf-moo{to{transform:translateX(-50%)}}
+
+/* ---------- SEND SIGNAL (문의 모달) ---------- */
+#pfMask{position:fixed;inset:0;z-index:80;background:rgba(2,6,14,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none}
+#pfMask.on{display:block}
+#pfSig{
+  position:fixed;z-index:90;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(440px,calc(100vw - 40px));padding:30px 30px 26px;display:none;
+  border:1px solid rgba(175,214,255,.45);background:rgba(4,11,24,.94);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 30px 90px rgba(0,0,0,.55);
+}
+#pfSig.on{display:block}
+body.day #pfSig{background:rgba(248,252,255,.97);border-color:#2f6fb4}
+#pfSig .sk{display:flex;align-items:center;gap:11px;color:#9dccfb;font-size:11px;font-weight:900;letter-spacing:.2em;margin-bottom:10px}
+body.day #pfSig .sk{color:#2f6fb4}
+#pfSig .sk i{display:block;width:8px;height:8px;border-radius:50%;background:#a4d4ff;box-shadow:0 0 14px var(--pf-glow)}
+#pfSig h3{margin:0;color:var(--pf-tx);font-size:21px;font-weight:900;letter-spacing:-.01em}
+#pfSig .sub{margin:7px 0 0;color:var(--pf-tx3);font-size:12.5px;font-weight:700}
+#pfSig textarea{
+  width:100%;min-height:120px;margin-top:18px;padding:13px 15px;resize:vertical;
+  border:1px solid var(--pf-line);background:rgba(169,213,255,.06);
+  color:var(--pf-tx);font-family:inherit;font-size:14.5px;line-height:1.6;
+}
+body.day #pfSig textarea{background:rgba(47,111,180,.06)}
+#pfSig textarea:focus{outline:1px solid var(--pf-acc)}
+#pfSig .row{display:flex;justify-content:flex-end;gap:9px;margin-top:16px}
+#pfSig .row button{padding:12px 20px;font-size:12px;font-weight:900;letter-spacing:.12em;border:1px solid var(--pf-line);color:var(--pf-tx2);background:transparent;cursor:pointer;transition:.2s}
+#pfSig .row .tx{border-color:#afd6ff;background:rgba(143,199,255,.16);color:var(--pf-tx)}
+#pfSig .row .tx:hover{background:rgba(143,199,255,.3)}
+body.day #pfSig .row .tx{border-color:#2f6fb4;background:rgba(47,111,180,.12)}
+#pfSig .done{display:none;text-align:center;padding:26px 0 12px}
+#pfSig .done .st{color:var(--pf-ice);font-size:26px}
+#pfSig .done b{display:block;margin-top:10px;color:var(--pf-tx);font-size:17px;font-weight:900;letter-spacing:.06em}
+#pfSig .done span{display:block;margin-top:6px;color:var(--pf-tx3);font-size:12px;font-weight:700}
+#pfSig.ok .frm{display:none}
+#pfSig.ok .done{display:block}
+
+/* ---------- FX ---------- */
+#pfStars{position:fixed;inset:0;z-index:0;pointer-events:none}
+#pfStars i{position:absolute;background:#d4e9ff;border-radius:50%;animation:pf-tw ease-in-out infinite}
+body.day #pfStars{opacity:.25}
+#pfFx{position:fixed;inset:0;z-index:120;pointer-events:none}
+.pf-pop{position:absolute;color:var(--pf-ice);font-size:15px;text-shadow:0 0 12px rgba(133,200,255,.7);transform:translate(-50%,-50%);animation:pf-pop .85s ease-out forwards}
+@keyframes pf-pop{0%{transform:translate(-50%,-50%) scale(.5);opacity:1}100%{transform:translate(-50%,-150%) scale(1.1) rotate(16deg);opacity:0}}
+.pf-bump{animation:pf-bump .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pf-bump{0%{transform:scale(1)}40%{transform:scale(1.06)}70%{transform:scale(.98)}100%{transform:scale(1)}}
+
+/* ---------- 등장 (FOUC 방지 + 스크롤 리빌) ---------- */
+.pf-main,.pf-footer{opacity:0;transition:opacity .4s ease}
+body.ready .pf-main,body.ready .pf-footer{opacity:1}
+.rv{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+body.ready .rv.in{opacity:1;transform:none}
+
+/* ---------- 반응형 ---------- */
+@media (max-width:1180px){
+  .pf-header{grid-template-columns:.7fr .6fr 1.7fr .8fr}
+  .pf-mode .mt{display:none}
+  .pf-hright{gap:12px}
+}
+@media (max-width:1040px){
+  /* 좁은 폭: 토글을 플로팅으로 빼서 헤더 4번째 칸 폭을 메인과 동일 유지 */
+  .pf-mode{position:fixed;right:18px;bottom:18px;z-index:60;padding:13px 15px;background:rgba(6,14,28,.8);box-shadow:0 10px 30px rgba(2,8,20,.55)}
+  body.day .pf-mode{background:rgba(245,250,255,.9);box-shadow:0 10px 26px rgba(30,70,120,.25)}
+}
+@media (max-width:920px){
+  .pf-hero{grid-template-columns:1fr;min-height:0;gap:8px}
+  .pf-char{min-height:0;margin-top:14px;padding-bottom:42px}
+  .pf-av{width:min(230px,64vw)}
+  .pf-ghost{top:-56px;left:-8px;font-size:170px}
+  .pf-grid{grid-template-columns:1fr}
+  .pf-card.w2{grid-column:auto}
+  .pf-rows{grid-template-columns:1fr}
+  .pf-vods{grid-template-columns:1fr 1fr}
+  .pf-comms{grid-template-columns:1fr 1fr}
+  .pf-comms .hi{grid-column:span 2}
+}
+@media (max-width:820px){
+  .pf-header{grid-template-columns:1fr auto;height:76px;padding:0 22px}
+  .pf-header .c3-frequency,.pf-header .main-nav{display:none}
+  .pf-hright{gap:12px}
+  .pf-enter{padding:10px 0;font-size:12px}
+  .pf-subnav{
+    display:flex;position:fixed;z-index:39;top:76px;left:0;right:0;
+    gap:22px;padding:13px 22px;overflow-x:auto;white-space:nowrap;
+    border-bottom:1px solid var(--pf-line);
+    background:rgba(3,8,18,.6);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
+  }
+  .pf-subnav::-webkit-scrollbar{display:none}
+  body.day .pf-subnav{background:rgba(240,248,255,.66)}
+  .pf-subnav a{flex:0 0 auto;color:var(--pf-tx3);font-size:12px;font-weight:900;letter-spacing:.13em}
+  .pf-subnav a.active{color:var(--pf-tx);border-bottom:2px solid var(--pf-acc);padding-bottom:3px}
+  .pf-main{padding:150px 0 70px;width:min(90vw,680px)}
+  .pf-card{padding:26px 22px 28px}
+  .pf-week{grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+  .pf-day{padding:12px 2px 11px}
+  .pf-day span{font-size:12.5px}
+  .pf-day em{display:none}
+  .pf-footer{grid-template-columns:1fr;height:auto;padding:18px 22px;gap:8px}
+  .pf-moo{justify-self:start;max-width:100%}
+  .pf-vods{grid-template-columns:1fr}
+  .pf-wv{grid-template-columns:96px 1fr 46px}
+}
+@media (prefers-reduced-motion:reduce){
+  .pf-av .sweep,.pf-av .orbit,.pf-char .st,#pfStars i,.pf-moo span,.signal i{animation:none!important}
+  .rv{opacity:1!important;transform:none!important;transition:none}
+}
+</style>
+</head>
+
+<body class="pf-page">
+<script>if(localStorage.getItem('usisi-mode')==='day')document.body.classList.add('day');</script>
+<div class="pf-gridbg" aria-hidden="true"></div>
+<div id="pfStars" aria-hidden="true"></div>
+
+<!-- ================= 헤더 (메인과 동일 골격) ================= -->
+<header class="pf-header">
+  <a class="wordmark compact" href="../" aria-label="우시시 메인">
+    <span class="mark-star" aria-hidden="true">✦</span>
+    <span>USISI</span>
+  </a>
+
+  <div class="c3-frequency">
+    FREQUENCY
+    <b>04.10 / 22:00</b>
+  </div>
+
+  <nav class="main-nav" aria-label="주요 메뉴">
+    <a href="../">MAIN</a>
+    <a class="active" href="../profile/">PROFILE</a>
+    <a href="../schedule/">SCHEDULE</a>
+    <a href="../song/">SONG BOOK</a>
+    <a href="../work/">UPBO</a>
+    <a href="../dress/">CLOSET</a>
+  </nav>
+
+  <div class="pf-hright">
+    <button class="pf-mode" id="pfMode" type="button" aria-label="낮/밤 모드 전환"><span class="mi">☾</span><span class="mt">NIGHT</span></button>
+    <a class="pf-enter" href="https://www.sooplive.com/station/nwakdifl1" target="_blank" rel="noreferrer">ENTER CHANNEL <span aria-hidden="true">↗</span></a>
+  </div>
+</header>
+
+<nav class="pf-subnav" aria-label="모바일 메뉴">
+  <a href="../">MAIN</a>
+  <a class="active" href="../profile/">PROFILE</a>
+  <a href="../schedule/">SCHEDULE</a>
+  <a href="../song/">SONG BOOK</a>
+  <a href="../work/">UPBO</a>
+  <a href="../dress/">CLOSET</a>
+</nav>
+
+<main class="pf-main">
+
+  <!-- ================= 히어로 ================= -->
+  <section class="pf-hero">
+    <div class="pf-copy">
+      <p class="pf-signal"><i></i> PERSONAL FILE DECRYPTED</p>
+      <div class="pf-ghost" aria-hidden="true">44</div>
+      <h1>PERSONAL<br><span>FILE</span></h1>
+      <div class="pf-nm">
+        <b data-hook="info-name">우시시</b>
+        <span data-hook="info-eng">USISI</span>
+      </div>
+      <p class="pf-quote" data-hook="quote">“어..? 젖소다...! Mooooo.....”</p>
+      <div class="pf-chips">
+        <span class="pf-chip">BIRTH<b data-dday>D-?</b></span>
+        <span class="pf-chip">DEBUT<b data-debut>D+?</b></span>
+        <span class="pf-chip">ON AIR<b data-hook="onair">22:00 ~</b></span>
+      </div>
+    </div>
+    <div class="pf-char">
+      <span class="st s1">✦</span><span class="st s2">✦</span><span class="st s3">✦</span>
+      <div class="pf-av" id="pfAv" title="눌러보세요">
+        <span class="tk t1"></span><span class="tk t2"></span><span class="tk t3"></span><span class="tk t4"></span>
+        <i class="orbit" aria-hidden="true"></i>
+        <i class="sweep" aria-hidden="true"></i>
+        <img id="avImg" src="https://profile.img.sooplive.co.kr/LOGO/nw/nwakdifl1/nwakdifl1.jpg" alt="우시시 프로필" onerror="this.parentElement.classList.add('noimg')">
+      </div>
+      <p class="pf-avcap">ID PHOTO / <b>USH-044</b></p>
+    </div>
+  </section>
+
+  <!-- ================= 카드 그리드 ================= -->
+  <div class="pf-grid">
+
+    <!-- FILE 01 · BASIC DATA -->
+    <article class="pf-card w2 rv">
+      <p class="pf-kick">FILE 01 <em>/ BASIC DATA · 기본 정보</em></p>
+      <div class="pf-rows">
+        <div class="pf-row"><span class="k">NAME</span><span class="v"><span data-hook="info-name">우시시</span> <small data-hook="info-eng" style="text-transform:lowercase">usisi</small></span></div>
+        <div class="pf-row"><span class="k">SPECIES</span><span class="v" data-hook="info-species">젖소 버추얼</span></div>
+        <div class="pf-row"><span class="k">DEBUT</span><span class="v" data-hook="info-debut">2026. 04. 10</span></div>
+        <div class="pf-row"><span class="k">BIRTHDAY</span><span class="v" data-hook="info-birth">6월 1일</span></div>
+        <div class="pf-row"><span class="k">GENDER</span><span class="v" data-hook="info-gender">여</span></div>
+        <div class="pf-row"><span class="k">AGENCY</span><span class="v" data-hook="info-agency">개인세</span></div>
+        <div class="pf-row"><span class="k">FANDOM</span><span class="v"><span data-hook="info-fandom">아야단</span> <small data-hook="info-suffix">₄₄</small></span></div>
+        <div class="pf-row"><span class="k">PLAY</span><span class="v" data-hook="info-play">VRChat</span></div>
+      </div>
+    </article>
+
+    <!-- FILE 02 · WAVEFORM (능력치) -->
+    <article class="pf-card rv">
+      <p class="pf-kick">FILE 02 <em>/ WAVEFORM · 능력치</em></p>
+      <div class="pf-wave" id="waveWrap">
+        <div class="pf-wv"><span class="k">부끄러움</span><span class="tr"><span class="fl" data-w="92"></span></span><span class="p">92</span></div>
+        <div class="pf-wv"><span class="k">차분함</span><span class="tr"><span class="fl" data-w="88"></span></span><span class="p">88</span></div>
+        <div class="pf-wv"><span class="k">우유 사랑</span><span class="tr"><span class="fl" data-w="100"></span></span><span class="p">100</span></div>
+        <div class="pf-wv"><span class="k">목소리 몽글함</span><span class="tr"><span class="fl" data-w="96"></span></span><span class="p">96</span></div>
+        <div class="pf-wv"><span class="k">밤샘 내성</span><span class="tr"><span class="fl" data-w="81"></span></span><span class="p">81</span></div>
+      </div>
+      <p class="pf-wnote">* 신호 분석 결과 — 밤 10시 이후 수치 급상승</p>
+    </article>
+
+    <!-- FILE 03 · POINT ITEM -->
+    <article class="pf-card rv">
+      <p class="pf-kick">FILE 03 <em>/ POINT ITEM · 특징</em></p>
+      <div class="pf-tags" data-hook="items">
+        <span class="pf-tag">🔔 목에 있는 종</span>
+        <span class="pf-tag">🤍 하트 얼룩 머리삔</span>
+        <span class="pf-tag">흰 뿔</span>
+        <span class="pf-tag">흰 귀</span>
+        <span class="pf-tag">🥛 흰 우유</span>
+      </div>
+      <p class="pf-motif">MOTIF / <b data-hook="motif">MOON · STAR · HEART · BELL · MILK</b></p>
+      <p class="pf-motif">PERSONALITY / <b data-hook="personality">부끄러움 · 차분함</b></p>
+    </article>
+
+    <!-- FILE 04 · FAN PROTOCOL -->
+    <article class="pf-card rv">
+      <p class="pf-kick">FILE 04 <em>/ FAN PROTOCOL · 아야단</em></p>
+      <div class="pf-proto">
+        <div class="pf-fanline">
+          <span class="big" data-hook="info-fandom">아야단</span>
+          <span class="suf" data-hook="info-suffix">₄₄</span>
+          <span class="cap">USISI FAN UNIT</span>
+        </div>
+        <div class="pf-rule">🔔 <span data-hook="fan-rule">가입 절차 — 닉네임 뒤에 <b>₄₄</b> 붙이기. 그게 전부예요.</span></div>
+        <div class="pf-like">
+          <span class="k">LIKES / 우유</span>
+          <span class="tr"><span class="fl" data-w="100"></span></span>
+          <p class="cap" data-hook="like-note">🥛 우유 애정도 100% — 흰 우유는 언제나 옳다</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- FILE 05 · WEEKLY SIGNAL (일정) -->
+    <article class="pf-card w2 rv">
+      <p class="pf-kick">FILE 05 <em>/ WEEKLY SIGNAL · 이번 주</em></p>
+      <div class="pf-week">
+        <div class="pf-day" id="day-0"><b>MON</b><i>🌙</i><span>22:00</span><em>소통</em></div>
+        <div class="pf-day" id="day-1"><b>TUE</b><i>🎧</i><span>22:00</span><em>ASMR</em></div>
+        <div class="pf-day" id="day-2"><b>WED</b><i>🕺</i><span>22:00</span><em>VRChat</em></div>
+        <div class="pf-day" id="day-3"><b>THU</b><i>🌙</i><span>22:00</span><em>소통</em></div>
+        <div class="pf-day" id="day-4"><b>FRI</b><i>🎧</i><span>22:00</span><em>ASMR</em></div>
+        <div class="pf-day" id="day-5"><b>SAT</b><i>✦</i><span>22:00</span><em>자유</em></div>
+        <div class="pf-day" id="day-6"><b>SUN</b><i>✦</i><span>22:00</span><em>자유</em></div>
+      </div>
+      <p class="pf-wknote"><i></i><span data-hook="week-note">휴방은 랜덤 — 신호가 끊겨도 놀라지 말기. 방송은 보통 오후 10시 이후에 켜져요.</span></p>
+    </article>
+
+    <!-- FILE 06 · LOG (마일스톤) -->
+    <article class="pf-card rv">
+      <p class="pf-kick">FILE 06 <em>/ LOG · 기록</em></p>
+      <div class="pf-log" id="logWrap">
+        <div class="pf-lg">
+          <div class="d">2026. 04. 10</div>
+          <div class="t">DEBUT — 첫 신호 송출</div>
+          <div class="s">밤바다 위, 우시시의 방송이 시작됐어요 (<span data-debut>D+?</span>)</div>
+        </div>
+        <div class="pf-lg">
+          <div class="d">2026. 06. 01</div>
+          <div class="t">BIRTHDAY — 별이 태어난 날</div>
+          <div class="s">매년 6월 1일 · 다음 생일까지 <span data-dday>D-?</span></div>
+        </div>
+        <div class="pf-lg">
+          <div class="d">NOW</div>
+          <div class="t">EVERY NIGHT 22:00 — 접속 중</div>
+          <div class="s">아야단₄₄과 함께, 오늘 밤도 몽글한 주파수로</div>
+        </div>
+        <div class="pf-lg">
+          <div class="d">NEXT</div>
+          <div class="t">다음 목표 수신 대기중…</div>
+          <div class="s">새 소식은 방송과 팬카페에서 가장 먼저</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- FILE 07 · SIGNATURE SONG -->
+    <article class="pf-card rv">
+      <p class="pf-kick">FILE 07 <em>/ SIGNATURE SONG</em></p>
+      <div class="pf-song">
+        <span class="pl" aria-hidden="true">▶</span>
+        <div>
+          <small>NOW TUNED</small>
+          <b data-hook="signature-song">백넘버 — 눈깜빡임</b>
+        </div>
+      </div>
+      <p class="pf-snote" data-hook="sig-note">노래 방송은 <b>안 함</b> — 부끄러움 92%의 젖소라서요.<br>대신 이 곡의 주파수에 맞춰 있어요. 밤에 들으면 더 좋아요.</p>
+    </article>
+
+    <!-- FILE 08 · ARCHIVE (VOD) -->
+    <article class="pf-card w2 rv" id="songs-card">
+      <p class="pf-kick">FILE 08 <em>/ ARCHIVE · 다시보기</em></p>
+      <div class="pf-vods" id="ovod-grid">
+        <div class="pf-vod"><span class="rec"><i></i>REC</span><span class="pl">▶</span><span class="no">01</span></div>
+        <div class="pf-vod"><span class="rec"><i></i>REC</span><span class="pl">▶</span><span class="no">02</span></div>
+        <div class="pf-vod"><span class="rec"><i></i>REC</span><span class="pl">▶</span><span class="no">03</span></div>
+      </div>
+      <p class="pf-vnote">* VOD가 등록되면 이 자리에 실제 다시보기 영상이 표시됩니다 (SOOP VOD 임베드).</p>
+    </article>
+
+    <!-- FILE 09 · COMMS (링크 + 문의) -->
+    <article class="pf-card w2 rv">
+      <p class="pf-kick">FILE 09 <em>/ COMMS · 연결</em></p>
+      <div class="pf-comms">
+        <a class="pf-lk" href="https://www.sooplive.com/station/nwakdifl1" target="_blank" rel="noreferrer"><small>LIVE ↗</small><b>SOOP 방송국</b></a>
+        <a class="pf-lk" href="https://discord.com/invite/avjW6zQZU9" target="_blank" rel="noreferrer"><small>COMMS ↗</small><b>디스코드</b></a>
+        <a class="pf-lk" href="https://cafe.naver.com/dairycow3" target="_blank" rel="noreferrer"><small>BASE ↗</small><b>팬카페</b></a>
+        <a class="pf-lk" href="https://fancim.me/celeb/profile.aspx?url=941740" target="_blank" rel="noreferrer"><small>SUPPORT ↗</small><b>팬심</b></a>
+        <button class="pf-lk hi" id="pfAskBtn" type="button"><small>SEND SIGNAL</small><b>📮 문의하기</b></button>
+      </div>
+    </article>
+
+  </div>
+</main>
+
+<!-- ================= 푸터 ================= -->
+<footer class="pf-footer">
+  <p>CONTENT / <b>JUST CHATTING · ASMR · FULL TRACKING</b></p>
+  <p>© 2026 <b>USISI Official</b> — 비즈니스 문의는 SEND SIGNAL</p>
+  <p class="pf-moo"><span>Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; </span></p>
+</footer>
+
+<!-- ================= SEND SIGNAL 모달 ================= -->
+<div id="pfMask"></div>
+<div id="pfSig" role="dialog" aria-modal="true" aria-label="문의 보내기">
+  <div class="frm">
+    <p class="sk"><i></i> SEND SIGNAL</p>
+    <h3>우시시에게 문의</h3>
+    <p class="sub">궁금한 것, 하고 싶은 말을 남겨주세요. — 시안 미리보기에서는 실제로 전송되지 않아요.</p>
+    <textarea id="pfTa" placeholder="주파수에 실어 보낼 내용을 입력해 주세요"></textarea>
+    <div class="row">
+      <button type="button" id="pfClose">CLOSE</button>
+      <button type="button" class="tx" id="pfSend">TRANSMIT ↗</button>
+    </div>
+  </div>
+  <div class="done">
+    <div class="st">✦</div>
+    <b>SIGNAL SENT</b>
+    <span>시안 데모 — 완성본에서 실제 전송돼요</span>
+  </div>
+</div>
+
+<div id="pfFx" aria-hidden="true"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../supabase.js"></script>
+<script src="../js/signal.js"></script>
+<script>
+(function(){
+/* ---- 프사 클릭 바운스 ---- */
+var ch=document.getElementById('pfAv');
+if(ch)ch.addEventListener('click',function(e){
+  e.stopPropagation();
+  if(window.SG){SG.bump(ch);var r=ch.getBoundingClientRect();SG.pop(r.left+r.width/2,r.top+r.height/2,6);}
+});
+
+/* ================= DB 로더 (§2-B.2) ================= */
+function esc(x){return String(x==null?'':x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function asText(v){if(v==null)return'';if(Array.isArray(v))return v.map(asText).filter(Boolean).join('\n');if(typeof v==='object')return'';return String(v);}
+function lines(v){return asText(v).split(/\n+/).map(function(t){return t.trim()}).filter(Boolean);}
+function setHook(k,v){var t=asText(v);if(!t)return;
+  document.querySelectorAll('[data-hook="'+k+'"]').forEach(function(el){el.textContent=t;});}
+
+function renderStats(v){
+  var ls=lines(v);if(!ls.length)return;
+  var w=document.getElementById('waveWrap');if(!w)return;
+  var html='';
+  ls.forEach(function(l){var m=l.split(':');var k=(m[0]||'').trim();
+    var n=Math.max(0,Math.min(100,parseInt(m[1],10)||0));
+    if(!k)return;
+    html+='<div class="pf-wv"><span class="k">'+esc(k)+'</span><span class="tr"><span class="fl" data-w="'+n+'" style="width:'+n+'%"></span></span><span class="p">'+n+'</span></div>';});
+  if(html)w.innerHTML=html;
+}
+function renderItems(v){
+  var ls=asText(v).split(/[\n,]+/).map(function(t){return t.trim()}).filter(Boolean);
+  if(!ls.length)return;
+  var w=document.querySelector('[data-hook="items"]');if(!w)return;
+  w.innerHTML=ls.map(function(t){return '<span class="pf-tag">'+esc(t)+'</span>'}).join('');
+}
+function renderWeek(v){
+  var ls=lines(v);if(!ls.length)return;
+  for(var i=0;i<7;i++){var cell=document.getElementById('day-'+i);if(!cell)continue;
+    var pr=(ls[i]||'').split('|');if(pr.length<2)continue;
+    var ic=cell.querySelector('i'),tm=cell.querySelector('span'),lb=cell.querySelector('em');
+    if(ic)ic.textContent=(pr[0]||'').trim()||'🌙';
+    if(tm)tm.textContent=(pr[1]||'').trim()||'-';
+    if(lb)lb.textContent=(pr[2]||'').trim()||'';}
+}
+function renderLogs(v){
+  var ls=lines(v);if(!ls.length)return;
+  var w=document.getElementById('logWrap');if(!w)return;
+  var html='';
+  ls.forEach(function(l){var pr=l.split('|');
+    html+='<div class="pf-lg"><div class="d">'+esc((pr[0]||'').trim())+'</div><div class="t">'+esc((pr[1]||'').trim())+'</div>'+(pr[2]?'<div class="s">'+esc(pr[2].trim())+'</div>':'')+'</div>';});
+  if(html)w.innerHTML=html;
+}
+function renderMultiline(k,v){var t=asText(v);if(!t)return;
+  var el=document.querySelector('[data-hook="'+k+'"]');
+  if(el)el.innerHTML=esc(t).replace(/\n/g,'<br>');}
+function applyAvatar(p){
+  var img=document.getElementById('avImg');if(!img)return;
+  var direct=asText(p['avatar']).trim();
+  var sid=asText(p['soop-id']).trim().toLowerCase();
+  var url=direct||(sid.length>=2?('https://profile.img.sooplive.co.kr/LOGO/'+sid.slice(0,2)+'/'+sid+'/'+sid+'.jpg'):'');
+  if(url){img.parentElement.classList.remove('noimg');img.style.visibility='';img.src=url;}
+}
+function recompute(p){
+  if(!window.SG)return;
+  var b=asText(p['info-birth']).match(/(\d{1,2})\D+(\d{1,2})/);
+  if(b){var n=SG.dday(('0'+b[1]).slice(-2)+'-'+('0'+b[2]).slice(-2));
+    document.querySelectorAll('[data-dday]').forEach(function(e){e.textContent=(n===0?'TODAY ✦':'D-'+n)});}
+  var d=asText(p['info-debut']).match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);
+  if(d){var m=SG.dplus(d[1]+'-'+('0'+d[2]).slice(-2)+'-'+('0'+d[3]).slice(-2));
+    document.querySelectorAll('[data-debut]').forEach(function(e){e.textContent='D+'+m});}
+}
+function applyProfile(p){
+  ['quote','onair','info-name','info-eng','info-species','info-gender','info-debut','info-birth',
+   'info-agency','info-play','info-fandom','info-suffix','fan-rule','like-note','motif','personality',
+   'week-note','signature-song'].forEach(function(k){setHook(k,p[k]);});
+  renderMultiline('sig-note',p['sig-note']);
+  renderStats(p['stats']); renderItems(p['items']); renderWeek(p['week']); renderLogs(p['logs']);
+  applyAvatar(p); recompute(p);
+}
+window.applyProfile=applyProfile; /* 검증용 노출 */
+
+async function loadVods(){
+  try{
+    if(typeof fetchAll!=='function')return;
+    var rows=await fetchAll('original_songs',{order:'id',asc:false});
+    if(!rows||!rows.length)return;
+    var g=document.getElementById('ovod-grid');if(!g)return;
+    g.innerHTML=rows.slice(0,6).map(function(sng){
+      return '<div class="pf-vodwrap"><div class="pf-vodfr"><iframe src="https://vod.sooplive.co.kr/player/'+encodeURIComponent(sng.vod_id||'')+'/embed" allowfullscreen loading="lazy"></iframe></div><p class="pf-vodtt">'+esc(sng.title||'')+'</p></div>';
+    }).join('');
+    var note=document.querySelector('.pf-vnote');
+    if(note)note.textContent='* SOOP 다시보기 임베드 — admin의 ARCHIVE 카드에서 관리해요.';
+  }catch(e){}
+}
+async function init(){
+  try{
+    if(typeof db!=='undefined'&&db){
+      var res=await db.from('profile').select('data').eq('id',1).single();
+      var p=res&&res.data&&res.data.data;
+      if(p)applyProfile(p);
+    }
+  }catch(e){}
+  loadVods();
+  if(typeof enableIframeAutoHeight==='function')enableIframeAutoHeight();
+  if(window.SG)SG.ready();
+}
+init();
+})();
+</script>
+</body>
+</html>

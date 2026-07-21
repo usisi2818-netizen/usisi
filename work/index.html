@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#06122a">
+<title>UPBO | 우시시 USISI Official</title>
+<meta name="description" content="우시시 업보 기록 — 아야단₄₄의 업보 현황">
+<link rel="icon" type="image/jpeg" href="https://profile.img.sooplive.co.kr/LOGO/nw/nwakdifl1/nwakdifl1.jpg">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/signal.css">
+<style>
+/* ── UPBO 전용 ── */
+.up-bar{display:flex;gap:10px;align-items:center;margin-bottom:20px;flex-wrap:wrap}
+.srch{flex:1;min-width:220px;padding:13px 17px;border:1px solid var(--pf-line);background:rgba(169,213,255,.06);color:var(--pf-tx);font-family:inherit;font-size:14.5px}
+.srch::placeholder{color:var(--pf-tx3)}
+.srch:focus{outline:1px solid var(--pf-acc)}
+body.day .srch{background:rgba(47,111,180,.06)}
+.upd{flex:0 0 auto;padding:10px 15px;border:1px solid var(--pf-line);color:var(--pf-tx3);font-size:11px;font-weight:900;letter-spacing:.12em;white-space:nowrap}
+.v-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.v-card{
+  border:1px solid var(--pf-line);background:rgba(169,213,255,.04);
+  padding:22px 14px 20px;text-align:center;cursor:pointer;transition:.2s;min-width:0;
+}
+.v-card:hover{background:rgba(143,199,255,.09);transform:translateY(-3px);border-color:rgba(175,214,255,.55)}
+.v-av{width:66px;height:66px;border-radius:50%;object-fit:cover;margin:0 auto 12px;display:block;border:1px solid rgba(207,233,255,.55);box-shadow:0 0 0 5px rgba(169,213,255,.06),0 8px 22px rgba(2,8,20,.45)}
+.v-fb{width:66px;height:66px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(150deg,#14243f,#081226);color:#9dccfb;font-family:"Arial Black",sans-serif;font-size:22px;border:1px solid rgba(207,233,255,.4)}
+body.day .v-fb{background:linear-gradient(150deg,#dcecfa,#c3dcf2);color:#2f6fb4}
+.v-nick{color:var(--pf-tx);font-size:15px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v-id{color:var(--pf-tx3);font-size:11px;font-weight:700;letter-spacing:.06em;margin:3px 0 11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v-total{display:inline-block;padding:6px 14px;border:1px solid rgba(175,214,255,.55);background:rgba(143,199,255,.14);color:var(--pf-ice);font-size:11px;font-weight:900;letter-spacing:.14em}
+body.day .v-total{color:#2f6fb4;border-color:#2f6fb4}
+/* 상세 모달 */
+#upOv{position:fixed;inset:0;z-index:80;background:rgba(2,6,14,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px}
+#upOv.on{display:flex}
+.up-m{width:min(430px,100%);max-height:84vh;display:flex;flex-direction:column;border:1px solid rgba(175,214,255,.45);background:rgba(4,11,24,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 30px 90px rgba(0,0,0,.55)}
+body.day .up-m{background:rgba(248,252,255,.97);border-color:#2f6fb4}
+.up-mt{display:flex;align-items:center;gap:14px;padding:22px 24px 18px;border-bottom:1px solid var(--pf-line);position:relative}
+.up-mav{width:54px;height:54px;border-radius:50%;object-fit:cover;border:1px solid rgba(207,233,255,.55);flex:0 0 auto}
+.up-mfb{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(150deg,#14243f,#081226);color:#9dccfb;font-family:"Arial Black",sans-serif;font-size:19px;border:1px solid rgba(207,233,255,.4);flex:0 0 auto}
+body.day .up-mfb{background:linear-gradient(150deg,#dcecfa,#c3dcf2);color:#2f6fb4}
+.up-mn{color:var(--pf-tx);font-size:18px;font-weight:900;line-height:1.2}
+.up-mi{color:var(--pf-tx3);font-size:11.5px;font-weight:700;letter-spacing:.06em;margin-top:2px}
+.up-mx{position:absolute;top:16px;right:18px;background:none;border:none;color:var(--pf-tx3);font-size:20px;cursor:pointer;line-height:1}
+.up-mx:hover{color:var(--pf-tx)}
+.up-mb{padding:16px 20px 22px;overflow-y:auto}
+.up-row{display:flex;align-items:center;gap:10px;padding:12px 15px;margin-bottom:7px;border:1px solid var(--pf-line);background:rgba(169,213,255,.05)}
+.up-row .nm{flex:1;color:var(--pf-tx);font-size:14.5px;font-weight:700;min-width:0}
+.up-row .evb{flex:0 0 auto;padding:3px 9px;border:1px solid rgba(255,214,110,.5);background:rgba(255,214,110,.13);color:#ffe3a1;font-size:10px;font-weight:900;letter-spacing:.12em}
+body.day .up-row .evb{background:#fff0cc;color:#b07d18;border-color:#ecd39a}
+.up-row .ct{flex:0 0 auto;min-width:48px;text-align:center;padding:5px 11px;border:1px solid rgba(175,214,255,.55);background:rgba(143,199,255,.12);color:var(--pf-ice);font-family:"Arial Black",sans-serif;font-size:13px}
+body.day .up-row .ct{color:#2f6fb4;border-color:#2f6fb4}
+.up-mempty{text-align:center;color:var(--pf-tx3);padding:32px 0;font-size:13px;font-weight:800;letter-spacing:.1em}
+@media (max-width:920px){ .v-grid{grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media (max-width:620px){
+  .v-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .v-card{padding:16px 8px 15px}
+  .v-av,.v-fb{width:54px;height:54px}
+  .v-nick{font-size:14px}
+}
+</style>
+</head>
+
+<body class="sg">
+<script>if(localStorage.getItem('usisi-mode')==='day')document.body.classList.add('day');</script>
+<div class="pf-gridbg" aria-hidden="true"></div>
+<div id="pfStars" aria-hidden="true"></div>
+
+<header class="pf-header">
+  <a class="wordmark compact" href="../" aria-label="우시시 메인">
+    <span class="mark-star" aria-hidden="true">✦</span>
+    <span>USISI</span>
+  </a>
+  <div class="c3-frequency">FREQUENCY<b>04.10 / 22:00</b></div>
+  <nav class="main-nav" aria-label="주요 메뉴">
+    <a href="../">MAIN</a>
+    <a href="../profile/">PROFILE</a>
+    <a href="../schedule/">SCHEDULE</a>
+    <a href="../song/">SONG BOOK</a>
+    <a class="active" href="../work/">UPBO</a>
+    <a href="../dress/">CLOSET</a>
+  </nav>
+  <div class="pf-hright">
+    <button class="pf-mode" id="pfMode" type="button" aria-label="낮/밤 모드 전환"><span class="mi">☾</span><span class="mt">NIGHT</span></button>
+    <a class="pf-enter" href="https://www.sooplive.com/station/nwakdifl1" target="_blank" rel="noreferrer">ENTER CHANNEL <span aria-hidden="true">↗</span></a>
+  </div>
+</header>
+
+<nav class="pf-subnav" aria-label="모바일 메뉴">
+  <a href="../">MAIN</a>
+  <a href="../profile/">PROFILE</a>
+  <a href="../schedule/">SCHEDULE</a>
+  <a href="../song/">SONG BOOK</a>
+  <a class="active" href="../work/">UPBO</a>
+  <a href="../dress/">CLOSET</a>
+</nav>
+
+<main class="sg-main">
+  <section class="sg-hero">
+    <div class="sg-ghost" aria-hidden="true">44</div>
+    <p class="pf-signal"><i></i> KARMA RECORDS</p>
+    <h1>UPBO<br><span>RECORD</span></h1>
+    <p class="sg-sub">아야단<b>₄₄</b>의 업보를 기록합니다 — 카드를 누르면 상세 기록이 열려요. 업보는 방송에서 차곡차곡 쌓입니다 🔔</p>
+  </section>
+
+  <div class="pf-card rv">
+    <p class="pf-kick">FILE 01 <em>/ VIEWER KARMA · 시청자 업보</em></p>
+    <div class="up-bar">
+      <input class="srch" id="search" placeholder="✦ 닉네임 · 아이디 검색">
+      <span class="upd" id="update-date"></span>
+    </div>
+    <div class="v-grid" id="grid"><div class="sg-spin" style="grid-column:1/-1"></div></div>
+  </div>
+</main>
+
+<footer class="pf-footer">
+  <p>CONTENT / <b>JUST CHATTING · ASMR · FULL TRACKING</b></p>
+  <p>© 2026 <b>USISI Official</b> — <button class="sg-btn" data-ask type="button" style="margin-left:8px">📮 SEND SIGNAL</button></p>
+  <p class="pf-moo"><span>Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; </span></p>
+</footer>
+
+<!-- 업보 상세 모달 -->
+<div id="upOv" onclick="if(event.target===this)closeModal()">
+  <div class="up-m">
+    <div class="up-mt" id="modal-top"></div>
+    <div class="up-mb" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- SEND SIGNAL 문의 모달 -->
+<div id="pfMask"></div>
+<div id="pfSig" role="dialog" aria-modal="true" aria-label="문의 보내기">
+  <div class="frm">
+    <p class="sk"><i></i> SEND SIGNAL</p>
+    <h3>우시시에게 문의</h3>
+    <p class="sub">궁금한 것, 하고 싶은 말을 남겨주세요. (익명)</p>
+    <textarea id="pfTa" placeholder="주파수에 실어 보낼 내용을 입력해 주세요"></textarea>
+    <div class="row">
+      <button type="button" id="pfClose">CLOSE</button>
+      <button type="button" class="tx" id="pfSend">TRANSMIT ↗</button>
+    </div>
+  </div>
+  <div class="done">
+    <div class="st">✦</div>
+    <b>SIGNAL SENT</b>
+    <span>소중한 신호가 무사히 도착했어요</span>
+  </div>
+</div>
+<div id="pfFx" aria-hidden="true"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../supabase.js"></script>
+<script src="../js/signal.js"></script>
+<script>
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function soopAvatar(id){ if(!id) return null; id=String(id).trim().toLowerCase(); if(id.length<2) return null; return `https://profile.img.sooplive.co.kr/LOGO/${id.slice(0,2)}/${id}/${id}.jpg`; }
+
+let viewers=[], types=[], counts=[];
+
+async function init(){
+  try {
+    if (typeof fetchAll === 'function') {
+      [viewers, types, counts] = await Promise.all([
+        fetchAll('viewers', { order:'sort_order', asc:true }),
+        fetchAll('upbo_types', { order:'sort_order', asc:true }),
+        fetchAll('upbo_counts', { order:'id', asc:true })
+      ]);
+    }
+  } catch(e) { viewers=[]; types=[]; counts=[]; }
+  let latest = counts.reduce((m,c)=> c.updated_at && c.updated_at>m ? c.updated_at : m, '');
+  document.getElementById('update-date').textContent = latest ? 'UPDATED ' + latest.slice(0,10) : 'UPDATED —';
+  render(viewers);
+  if (typeof enableIframeAutoHeight === 'function') enableIframeAutoHeight();
+  if (window.SG) SG.ready();
+}
+
+function viewerTotal(vid){
+  return counts.filter(c=>c.viewer_id===vid && c.count>0).reduce((s,c)=>s+c.count,0);
+}
+
+function render(list){
+  const grid=document.getElementById('grid');
+  if(!list.length){ grid.innerHTML='<div style="grid-column:1/-1" class="sg-empty"><span class="ic">🔔</span>아직 기록된 업보가 없어요</div>'; return; }
+  grid.innerHTML = list.map(v=>{
+    const av=soopAvatar(v.soop_id); const ini=(v.nickname||'?').charAt(0);
+    const avHtml = av ? `<img class="v-av" src="${av}" onerror="this.outerHTML='<div class=\\'v-fb\\'>${ini}</div>'">` : `<div class="v-fb">${ini}</div>`;
+    const total=viewerTotal(v.id);
+    return `<div class="v-card" onclick="openModal(${v.id})">
+      ${avHtml}
+      <div class="v-nick">${esc(v.nickname)}</div>
+      ${v.soop_id?`<div class="v-id">${esc(v.soop_id)}</div>`:'<div class="v-id">&nbsp;</div>'}
+      <span class="v-total">KARMA ×${total}</span>
+    </div>`;
+  }).join('');
+}
+
+function openModal(vid){
+  const v=viewers.find(x=>x.id===vid); if(!v) return;
+  const av=soopAvatar(v.soop_id); const ini=(v.nickname||'?').charAt(0);
+  const avHtml = av ? `<img class="up-mav" src="${av}" onerror="this.outerHTML='<div class=\\'up-mfb\\'>${ini}</div>'">` : `<div class="up-mfb">${ini}</div>`;
+  document.getElementById('modal-top').innerHTML = `
+    ${avHtml}
+    <div><div class="up-mn">${esc(v.nickname)}</div>${v.soop_id?`<div class="up-mi">${esc(v.soop_id)}</div>`:''}</div>
+    <button class="up-mx" onclick="closeModal()">✕</button>`;
+  const myCounts = {};
+  counts.filter(c=>c.viewer_id===vid).forEach(c=>{ myCounts[c.type_id]=c.count; });
+  const rows = types.filter(t=>(myCounts[t.id]||0)>0).map(t=>`
+    <div class="up-row">
+      <span class="nm">${esc(t.name)}</span>
+      ${t.category==='이벤트'?'<span class="evb">EVENT</span>':''}
+      <span class="ct">×${myCounts[t.id]}</span>
+    </div>`).join('');
+  document.getElementById('modal-body').innerHTML = rows || '<div class="up-mempty">아직 업보가 없어요 🤍</div>';
+  document.getElementById('upOv').classList.add('on');
+}
+function closeModal(){ document.getElementById('upOv').classList.remove('on'); }
+
+document.getElementById('search').addEventListener('input', e=>{
+  const q=e.target.value.trim().toLowerCase();
+  render(viewers.filter(v=> (v.nickname||'').toLowerCase().includes(q) || (v.soop_id||'').toLowerCase().includes(q)));
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+init();
+</script>
+</body>
+</html>

@@ -9,6 +9,11 @@
       name="description"
       content="달빛에 접속한 우시시 공식 홈페이지 메인 화면"
     />
+    <link
+      rel="icon"
+      type="image/jpeg"
+      href="https://profile.img.sooplive.co.kr/LOGO/nw/nwakdifl1/nwakdifl1.jpg"
+    />
     <link rel="stylesheet" href="css/style.css" />
   </head>
 
@@ -20,6 +25,7 @@
     -->
     <main class="screen concept-three">
       <img
+        id="mainBg"
         class="c3-background"
         src="assets/optimized/usisi-night.webp"
         alt="밤바다를 배경으로 누워 있는 우시시"
@@ -35,7 +41,7 @@
 
         <div class="c3-frequency">
           FREQUENCY
-          <b>04.10 / 22:00</b>
+          <b data-hook="main-freq">04.10 / 22:00</b>
         </div>
 
         <nav class="main-nav" aria-label="주요 메뉴">
@@ -77,27 +83,80 @@
           <span>USISI</span>
         </div>
 
-        <p class="c3-lead">
+        <p class="c3-lead" data-hook="main-lead">
           달빛에 접속한 조용한 목소리.<br />
-          오늘 밤도 아야단₄₄과 함께.
+          오늘 밤도 아야단과 함께.
         </p>
 
         <a
           class="c3-play"
-          href="https://discord.com/invite/avjW6zQZU9"
+          id="mainCta"
+          href="https://cafe.naver.com/dairycow3"
           target="_blank"
           rel="noreferrer"
         >
           <span aria-hidden="true">▶</span>
-          <p><small>OPEN COMMS</small>JOIN DISCORD</p>
+          <p>
+            <small data-hook="main-cta-label">OPEN COMMS</small
+            ><span data-hook="main-cta-text">팬카페</span>
+          </p>
         </a>
       </section>
 
       <footer class="c3-footer">
-        <p>CONTENT / <b>JUST CHATTING · ASMR · FULL TRACKING</b></p>
-        <p>SYMBOL / <b>MOON · STAR · HEART · BELL</b></p>
-        <p class="moving-line">Mooooo... &nbsp; Mooooo... &nbsp; Mooooo...</p>
+        <p>
+          CONTENT /
+          <b data-hook="main-content">JUST CHATTING · ASMR · FULL TRACKING</b>
+        </p>
+        <p>SYMBOL / <b data-hook="main-symbol">BELL · COW · MILK</b></p>
+        <p class="moving-line" data-hook="main-marquee">
+          Mooooo... USISI X AYADAN
+        </p>
       </footer>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="supabase.js"></script>
+    <script>
+      /* 메인 문구·배경사진 DB 로더 — admin 🏠메인 탭에서 편집 */
+      (function () {
+        function esc(x) {
+          return String(x == null ? "" : x)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+        }
+        function asText(v) {
+          if (v == null) return "";
+          if (Array.isArray(v)) return v.map(asText).filter(Boolean).join("\n");
+          if (typeof v === "object") return "";
+          return String(v);
+        }
+        function setHook(k, v) {
+          var t = asText(v);
+          if (!t) return;
+          document.querySelectorAll('[data-hook="' + k + '"]').forEach(function (el) {
+            el.innerHTML = esc(t).replace(/\n/g, "<br />");
+          });
+        }
+        async function init() {
+          try {
+            if (typeof db === "undefined" || !db) return;
+            var res = await db.from("profile").select("data").eq("id", 1).single();
+            var p = res && res.data && res.data.data;
+            if (!p) return;
+            ["main-freq", "main-lead", "main-cta-label", "main-cta-text",
+             "main-content", "main-symbol", "main-marquee"].forEach(function (k) {
+              setHook(k, p[k]);
+            });
+            var bg = asText(p["main-bg"]).trim();
+            if (bg) document.getElementById("mainBg").src = bg;
+            var url = asText(p["main-cta-url"]).trim();
+            if (url) document.getElementById("mainCta").href = url;
+          } catch (e) {}
+        }
+        init();
+      })();
+    </script>
   </body>
 </html>

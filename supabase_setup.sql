@@ -161,9 +161,11 @@ CREATE TABLE IF NOT EXISTS upbo_types (
   id         BIGSERIAL PRIMARY KEY,
   name       TEXT NOT NULL,
   category   TEXT DEFAULT '일반',            -- 일반 / 이벤트
+  memo       TEXT,                            -- 메모 (겉옷 on/off, 헤어 변경 등)
   sort_order INT DEFAULT 0,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
+ALTER TABLE upbo_types ADD COLUMN IF NOT EXISTS memo TEXT;   -- 기존 프로젝트 대비
 ALTER TABLE upbo_types ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "upbo_types_all" ON upbo_types;
 CREATE POLICY "upbo_types_all" ON upbo_types FOR ALL USING (true) WITH CHECK (true);

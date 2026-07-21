@@ -102,7 +102,7 @@ body.day .pg.active{background:rgba(47,111,180,.14);border-color:#2f6fb4}
     <div class="sg-ghost" aria-hidden="true">♪</div>
     <p class="pf-signal"><i></i> NOW TUNED</p>
     <h1>SONG<br><span>BOOK</span></h1>
-    <p class="sg-sub">노래 방송은 <b>안 해요</b> — 부끄러움 92%의 젖소라서. 대신 밤의 주파수에 어울리는 곡들을 여기 모아둘게요.</p>
+    <p class="sg-sub" data-hook="sub-song">노래 방송은 <b>거의 안 해요</b> — 부끄러움 92%의 젖소지만, 시도한 곡들을 여기 모아 둘게요.</p>
   </section>
 
   <div class="sig-song rv">
@@ -171,14 +171,8 @@ async function init() {
   try {
     songs = (typeof fetchAll === 'function') ? await fetchAll('songs', { order:'id', asc:true }) : [];
   } catch(e) { songs = []; }
-  try{
-    if (typeof db !== 'undefined' && db) {
-      const res = await db.from('profile').select('data').eq('id',1).single();
-      const pf = res && res.data && res.data.data;
-      if (pf && pf['signature-song']) document.querySelectorAll('[data-hook="signature-song"]').forEach(el=>el.textContent=pf['signature-song']);
-    }
-  }catch(e){}
   renderGenres(); render();
+  if (window.SG) SG.applyHooks();
   if (typeof enableIframeAutoHeight === 'function') enableIframeAutoHeight();
   if (window.SG) SG.ready();
 }

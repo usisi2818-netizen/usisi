@@ -132,7 +132,7 @@ body.day .pg.active{background:rgba(47,111,180,.14);border-color:#2f6fb4}
     <div class="sg-ghost" aria-hidden="true">✦</div>
     <p class="pf-signal"><i></i> COSTUME ARCHIVE</p>
     <h1>CLOSET<br><span>ARCHIVE</span></h1>
-    <p class="sg-sub">새로 올린 옷은 <b>NEW DROP 포스터</b>로, 이미 올린 옷은 <b>ARCHIVE</b>에서 봐요. 이미지를 누르면 크게 볼 수 있어요.</p>
+    <p class="sg-sub" data-hook="sub-dress">새로 올린 옷은 <b>NEW DROP 포스터</b>로, 이미 올린 옷은 <b>ARCHIVE</b>에서 봐요.<br>이미지를 누르면 크게 볼 수 있어요.</p>
   </section>
 
   <div class="pf-card rv">
@@ -194,8 +194,8 @@ function fmtDate(s){ try{ const d=new Date(s); if(isNaN(d)) return ''; const y=S
 
 // ── 분류 (이름·순서를 여기서 바꾸면 끝. admin select 옵션 + admin DRESS_CATS도 같은 값으로 맞추기) ──
 const CATS = [
-  { key:'hair',   label:'헤어' },
   { key:'outfit', label:'의상' },
+  { key:'hair',   label:'헤어' },
   { key:'lens',   label:'렌즈' },
 ];
 const LABELS = Object.fromEntries(CATS.map(c => [c.key, c.label]));
@@ -230,6 +230,7 @@ async function load(){
   });
   buildTabs();
   render();
+  if (window.SG) SG.applyHooks();
   if (typeof enableIframeAutoHeight === 'function') enableIframeAutoHeight();
   if (window.SG) SG.ready();
 }

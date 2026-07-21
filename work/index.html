@@ -46,6 +46,7 @@ body.day .up-mfb{background:linear-gradient(150deg,#dcecfa,#c3dcf2);color:#2f6fb
 .up-mb{padding:16px 20px 22px;overflow-y:auto}
 .up-row{display:flex;align-items:center;gap:10px;padding:12px 15px;margin-bottom:7px;border:1px solid var(--pf-line);background:rgba(169,213,255,.05)}
 .up-row .nm{flex:1;color:var(--pf-tx);font-size:14.5px;font-weight:700;min-width:0}
+.up-row .nm .memo{display:block;margin-top:4px;color:var(--pf-tx3);font-size:11.5px;font-weight:600;line-height:1.5;word-break:keep-all}
 .up-row .evb{flex:0 0 auto;padding:3px 9px;border:1px solid rgba(255,214,110,.5);background:rgba(255,214,110,.13);color:#ffe3a1;font-size:10px;font-weight:900;letter-spacing:.12em}
 body.day .up-row .evb{background:#fff0cc;color:#b07d18;border-color:#ecd39a}
 .up-row .ct{flex:0 0 auto;min-width:48px;text-align:center;padding:5px 11px;border:1px solid rgba(175,214,255,.55);background:rgba(143,199,255,.12);color:var(--pf-ice);font-family:"Arial Black",sans-serif;font-size:13px}
@@ -100,7 +101,7 @@ body.day .up-row .ct{color:#2f6fb4;border-color:#2f6fb4}
     <div class="sg-ghost" aria-hidden="true">44</div>
     <p class="pf-signal"><i></i> KARMA RECORDS</p>
     <h1>UPBO<br><span>RECORD</span></h1>
-    <p class="sg-sub">아야단<b>₄₄</b>의 업보를 기록합니다 — 카드를 누르면 상세 기록이 열려요. 업보는 방송에서 차곡차곡 쌓입니다 🔔</p>
+    <p class="sg-sub" data-hook="sub-work">아야단의 업보를 기록합니다 — 카드를 누르면 상세 기록이 열려요. 업보는 방송에서 차곡차곡 쌓입니다 🔔</p>
   </section>
 
   <div class="pf-card rv">
@@ -170,6 +171,7 @@ async function init(){
   let latest = counts.reduce((m,c)=> c.updated_at && c.updated_at>m ? c.updated_at : m, '');
   document.getElementById('update-date').textContent = latest ? 'UPDATED ' + latest.slice(0,10) : 'UPDATED —';
   render(viewers);
+  if (window.SG) SG.applyHooks();
   if (typeof enableIframeAutoHeight === 'function') enableIframeAutoHeight();
   if (window.SG) SG.ready();
 }
@@ -206,7 +208,7 @@ function openModal(vid){
   counts.filter(c=>c.viewer_id===vid).forEach(c=>{ myCounts[c.type_id]=c.count; });
   const rows = types.filter(t=>(myCounts[t.id]||0)>0).map(t=>`
     <div class="up-row">
-      <span class="nm">${esc(t.name)}</span>
+      <span class="nm">${esc(t.name)}${t.memo?`<span class="memo">📝 ${esc(t.memo)}</span>`:''}</span>
       ${t.category==='이벤트'?'<span class="evb">EVENT</span>':''}
       <span class="ct">×${myCounts[t.id]}</span>
     </div>`).join('');

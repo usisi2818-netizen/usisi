@@ -753,12 +753,18 @@ function renderWeek(v){
     if(tm)tm.textContent=(pr[1]||'').trim()||'-';
     if(lb)lb.textContent=(pr[2]||'').trim()||'';}
 }
+/* {생일}·{데뷔} 토큰 → D-Day 자동계산 자리 (recompute가 뒤이어 채움) */
+function ddayTok(t){
+  return esc(t)
+    .replace(/\{\s*(생일|D-DAY|dday)\s*\}/gi,'<span data-dday>D-?</span>')
+    .replace(/\{\s*(데뷔|데뷰|D\+|debut)\s*\}/gi,'<span data-debut>D+?</span>');
+}
 function renderLogs(v){
   var ls=lines(v);if(!ls.length)return;
   var w=document.getElementById('logWrap');if(!w)return;
   var html='';
   ls.forEach(function(l){var pr=l.split('|');
-    html+='<div class="pf-lg"><div class="d">'+esc((pr[0]||'').trim())+'</div><div class="t">'+esc((pr[1]||'').trim())+'</div>'+(pr[2]?'<div class="s">'+esc(pr[2].trim())+'</div>':'')+'</div>';});
+    html+='<div class="pf-lg"><div class="d">'+esc((pr[0]||'').trim())+'</div><div class="t">'+ddayTok((pr[1]||'').trim())+'</div>'+(pr[2]?'<div class="s">'+ddayTok(pr[2].trim())+'</div>':'')+'</div>';});
   if(html)w.innerHTML=html;
 }
 function renderMultiline(k,v){var t=asText(v);if(!t)return;
@@ -771,14 +777,32 @@ function applyAvatar(p){
   var url=direct||(sid.length>=2?('https://profile.img.sooplive.co.kr/LOGO/'+sid.slice(0,2)+'/'+sid+'/'+sid+'.jpg'):'');
   if(url){img.parentElement.classList.remove('noimg');img.style.visibility='';img.src=url;}
 }
+var BIRTH_FALLBACK='06-01', DEBUT_FALLBACK='2026-04-10';
+/* 생일 파서 — '06.01' '6월 1일' '2026.06.01' '6/1' 전부 인식 */
+function parseMD(v){
+  var n=asText(v).match(/\d+/g); if(!n) return null;
+  if(n.length>=3 && n[0].length===4) n=n.slice(1,3);        /* 연도 붙어도 OK */
+  else if(n.length>=2) n=n.slice(0,2);
+  else return null;
+  var m=+n[0], d=+n[1];
+  if(!(m>=1&&m<=12&&d>=1&&d<=31)) return null;
+  return ('0'+m).slice(-2)+'-'+('0'+d).slice(-2);
+}
+/* 데뷔 파서 — '2026.04.10' '2026-04-10' '2026년 4월 10일' 전부 인식 */
+function parseYMD(v){
+  var n=asText(v).match(/\d+/g); if(!n||n.length<3) return null;
+  var y=+n[0], m=+n[1], d=+n[2];
+  if(y<100) y+=2000;
+  if(!(y>=1900&&y<=2999&&m>=1&&m<=12&&d>=1&&d<=31)) return null;
+  return y+'-'+('0'+m).slice(-2)+'-'+('0'+d).slice(-2);
+}
 function recompute(p){
   if(!window.SG)return;
-  var b=asText(p['info-birth']).match(/(\d{1,2})\D+(\d{1,2})/);
-  if(b){var n=SG.dday(('0'+b[1]).slice(-2)+'-'+('0'+b[2]).slice(-2));
-    document.querySelectorAll('[data-dday]').forEach(function(e){e.textContent=(n===0?'TODAY ✦':'D-'+n)});}
-  var d=asText(p['info-debut']).match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);
-  if(d){var m=SG.dplus(d[1]+'-'+('0'+d[2]).slice(-2)+'-'+('0'+d[3]).slice(-2));
-    document.querySelectorAll('[data-debut]').forEach(function(e){e.textContent='D+'+m});}
+  /* 값이 없거나 형식이 이상해도 기본값으로 항상 표시 — 'D-?' 방치 방지 */
+  var n=SG.dday(parseMD(p['info-birth'])||BIRTH_FALLBACK);
+  document.querySelectorAll('[data-dday]').forEach(function(e){e.textContent=(n===0?'TODAY ✦':'D-'+n)});
+  var m=SG.dplus(parseYMD(p['info-debut'])||DEBUT_FALLBACK);
+  document.querySelectorAll('[data-debut]').forEach(function(e){e.textContent='D+'+m});
 }
 function applyProfile(p){
   ['quote','onair','info-name','info-eng','info-species','info-gender','info-debut','info-birth',

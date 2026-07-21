@@ -116,6 +116,21 @@
   };
   SG.reveal();
 
+  /* ---- 서브페이지 공용: profile.data의 값으로 [data-hook] 채우기 ---- */
+  SG.applyHooks=async function(){
+    try{
+      if(typeof db==='undefined'||!db)return;
+      var res=await db.from('profile').select('data').eq('id',1).single();
+      var p=res&&res.data&&res.data.data; if(!p)return;
+      $$('[data-hook]').forEach(function(el){
+        var v=p[el.getAttribute('data-hook')];
+        if(v==null||typeof v==='object')return;      /* 타입 방어: [object Object] 금지 */
+        var t=String(v); if(!t.trim())return;
+        el.innerHTML=t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+      });
+    }catch(e){}
+  };
+
   /* ---- FOUC 게이트 ---- */
   SG.ready=function(){
     document.body.classList.add('ready');

@@ -132,7 +132,7 @@ body.day .sch-m .mp .pt{color:#2f6fb4}
     <div class="sg-ghost" aria-hidden="true">22</div>
     <p class="pf-signal"><i></i> WEEKLY FREQUENCY</p>
     <h1>ON AIR<br><span>SCHEDULE</span></h1>
-    <p class="sg-sub">휴방은 <b>랜덤</b> — 신호가 끊겨도 놀라지 말기. 방송은 보통 <b>오후 10시 이후</b>에 켜져요. 달력의 신호를 확인해 주세요.</p>
+    <p class="sg-sub" data-hook="sub-schedule">휴방은 <b>랜덤</b> — 방송은 보통 <b>오후 10시 이후</b>에 켜져요. 방송알람을 확인해 주세요.</p>
   </section>
 
   <div class="pf-card rv" style="margin-bottom:22px">
@@ -201,6 +201,7 @@ async function init() {
     allSchedule = (typeof fetchAll === 'function') ? await fetchAll('schedule', { order:'date', asc:true }) : [];
   } catch(e) { allSchedule = []; }
   renderCalendar(); renderUpcoming();
+  if (window.SG) SG.applyHooks();
   if (typeof enableIframeAutoHeight === 'function') enableIframeAutoHeight();
   if (window.SG) SG.ready();
 }

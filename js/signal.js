@@ -103,18 +103,40 @@
   });
 
   /* ---- 스크롤 리빌 + 게이지 ---- */
-  function fill(scope){Array.prototype.forEach.call(scope.querySelectorAll('.fl[data-w]'),function(f){
-    if(!f.dataset.done){f.dataset.done=1;setTimeout(function(){f.style.width=f.dataset.w+'%';},120);}});}
+  function fill(scope){
+    Array.prototype.forEach.call((scope||document).querySelectorAll('.fl[data-w]'),function(f){
+      if(f.dataset.done)return;
+      f.dataset.done=1;
+      setTimeout(function(){ f.style.width=f.dataset.w+'%'; f.classList.add('on'); },120);
+    });
+  }
+  SG.fill=fill;
+  /* 화면 밖 카드까지 전부 채움 — iframe 임베드처럼 스크롤이 없는 환경 대비 */
+  SG.fillAll=function(){ fill(document); };
+  SG.revealAll=function(){ $$('.rv').forEach(function(el){el.classList.add('in')}); fill(document); };
   SG.reveal=function(){
     var rvs=$$('.rv');
+    /* 문서가 스크롤되지 않는 상황(짧은 페이지·고정높이 iframe)에선 관찰해도 영영 안 뜬다 → 즉시 표시 */
+    if(document.documentElement.scrollHeight<=window.innerHeight+4){ SG.revealAll(); return; }
     if('IntersectionObserver' in window){
       var io=new IntersectionObserver(function(es){es.forEach(function(en){
         if(en.isIntersecting){en.target.classList.add('in');fill(en.target);io.unobserve(en.target);}
-      })},{threshold:.14});
+      })},{threshold:.14,rootMargin:'220px 0px'});
       rvs.forEach(function(el){if(!el.classList.contains('in'))io.observe(el)});
-    }else rvs.forEach(function(el){el.classList.add('in');fill(el)});
+    }else SG.revealAll();
   };
   SG.reveal();
+
+  /* ---- 서브페이지 공통 배경 교체 (프로필~옷장 한 번에) ---- */
+  SG.applyBg=function(p){
+    if(!p)return;
+    [['sub-bg-night','--sub-bg-night'],['sub-bg-day','--sub-bg-day']].forEach(function(pair){
+      var v=p[pair[0]];
+      if(v==null||typeof v==='object')return;
+      v=String(v).trim(); if(!v)return;
+      document.documentElement.style.setProperty(pair[1],'url("'+v.replace(/"/g,'%22')+'")');
+    });
+  };
 
   /* ---- 서브페이지 공용: profile.data의 값으로 [data-hook] 채우기 ---- */
   SG.applyHooks=async function(){
@@ -122,6 +144,7 @@
       if(typeof db==='undefined'||!db)return;
       var res=await db.from('profile').select('data').eq('id',1).single();
       var p=res&&res.data&&res.data.data; if(!p)return;
+      SG.applyBg(p);
       $$('[data-hook]').forEach(function(el){
         var v=p[el.getAttribute('data-hook')];
         if(v==null||typeof v==='object')return;      /* 타입 방어: [object Object] 금지 */
@@ -136,6 +159,7 @@
     document.body.classList.add('ready');
     $$('.rv').forEach(function(el){var r=el.getBoundingClientRect();
       if(r.top<window.innerHeight*0.9){el.classList.add('in');fill(el);}});
+    if(!SG._net){ SG._net=1; setTimeout(SG.revealAll,3000); }   /* 안전망 */
   };
   if(document.readyState==='complete')SG.ready();
   else window.addEventListener('load',SG.ready);

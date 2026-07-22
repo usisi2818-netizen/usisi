@@ -30,13 +30,18 @@ body.day{
 }
 
 /* ---------- 페이지 배경 ---------- */
+/* 서브페이지(프로필~옷장) 공통 배경 — admin 🏠메인 > 02 에서 교체 */
+:root{
+  --sub-bg-night: url("../assets/optimized/usisi-night.webp");
+  --sub-bg-day:   url("../assets/optimized/usisi-day.webp");
+}
 body.sg{
   min-height:100svh;
   color:var(--pf-tx);
   background-color:var(--navy-deep);
   background-image:
     linear-gradient(90deg, rgba(2,7,18,.93) 0%, rgba(3,10,25,.7) 52%, rgba(2,7,18,.9) 100%),
-    url("../assets/optimized/usisi-night.webp");
+    var(--sub-bg-night);
   background-repeat:no-repeat,no-repeat;
   background-position:center,center;
   background-size:cover,cover;
@@ -47,7 +52,7 @@ body.sg.day{
   background-color:#eaf3fd;
   background-image:
     linear-gradient(90deg, rgba(240,248,255,.92) 0%, rgba(242,249,255,.7) 52%, rgba(238,247,255,.9) 100%),
-    url("../assets/optimized/usisi-day.webp");
+    var(--sub-bg-day);
 }
 .pf-gridbg{
   position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.14;

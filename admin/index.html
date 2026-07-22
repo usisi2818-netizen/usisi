@@ -184,7 +184,27 @@ textarea.input{resize:vertical}
     </div>
 
     <div class="acard">
-      <p class="ct">02 / 히어로 문구</p>
+      <p class="ct">02 / 서브 페이지 배경 사진 <em style="font-style:normal;color:var(--pf-tx3);letter-spacing:.06em">— 프로필·일정·노래책·업보·옷장 한번에</em></p>
+      <div class="hint" style="margin-bottom:14px">
+        여기 넣은 사진이 <b>프로필부터 옷장까지 5개 페이지 배경에 한꺼번에</b> 적용돼요. <b>메인 배경과는 별개</b>입니다.<br>
+        🌙 <b>NIGHT</b> · ☀ <b>DAY</b>를 각각 넣을 수 있고, 사이트 우측 낮/밤 토글에 맞춰 자동으로 바뀌어요.<br>
+        권장 <b>가로형 (1920×1080 정도)</b> · 비우면 기본 사진. 이미지 주소 얻는 법은 위 01번 설명과 같아요.
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label class="lbl">🌙 NIGHT 배경 링크 (URL)</label>
+          <input class="input" id="f-sub-bg-night" type="url" placeholder="https://stimg.sooplive.com/… (밤 배경)" oninput="previewSubBg()"></div>
+        <div class="ff"><label class="lbl">☀ DAY 배경 링크 (URL)</label>
+          <input class="input" id="f-sub-bg-day" type="url" placeholder="https://stimg.sooplive.com/… (낮 배경)" oninput="previewSubBg()"></div>
+        <div class="ff"><div style="height:132px;border:1px solid var(--pf-line);background:#04101F center/cover no-repeat" id="sub-bg-n-prev"></div>
+          <div class="hint" style="text-align:center;margin-top:6px">🌙 NIGHT 미리보기</div></div>
+        <div class="ff"><div style="height:132px;border:1px solid var(--pf-line);background:#04101F center/cover no-repeat" id="sub-bg-d-prev"></div>
+          <div class="hint" style="text-align:center;margin-top:6px">☀ DAY 미리보기</div></div>
+      </div>
+      <div class="rowR"><button class="btn p" onclick="saveLocalProfile()">저장 ✦</button></div>
+    </div>
+
+    <div class="acard">
+      <p class="ct">03 / 히어로 문구</p>
       <div class="ff"><label class="lbl">FREQUENCY 표기 (좌측 상단 작은 글씨)</label>
         <input class="input" id="f-main-freq" placeholder="04.10 / 22:00"></div>
       <div class="ff"><label class="lbl">메인 소개 문구 (엔터로 줄바꿈)</label>
@@ -194,7 +214,7 @@ textarea.input{resize:vertical}
     </div>
 
     <div class="acard">
-      <p class="ct">03 / 메인 버튼 (▶ 큰 버튼)</p>
+      <p class="ct">04 / 메인 버튼 (▶ 큰 버튼)</p>
       <div class="form-grid">
         <div class="ff"><label class="lbl">위 작은 라벨</label><input class="input" id="f-main-cta-label" placeholder="OPEN COMMS"></div>
         <div class="ff"><label class="lbl">버튼 문구</label><input class="input" id="f-main-cta-text" placeholder="팬카페"></div>
@@ -205,7 +225,7 @@ textarea.input{resize:vertical}
     </div>
 
     <div class="acard">
-      <p class="ct">04 / 하단 문구</p>
+      <p class="ct">05 / 하단 문구</p>
       <div class="ff"><label class="lbl">CONTENT / (콘텐츠 종류)</label>
         <input class="input" id="f-main-content" placeholder="JUST CHATTING · ASMR · FULL TRACKING"></div>
       <div class="ff"><label class="lbl">SYMBOL / (상징)</label>
@@ -217,7 +237,7 @@ textarea.input{resize:vertical}
     </div>
 
     <div class="acard">
-      <p class="ct">05 / 각 페이지 소개 문구</p>
+      <p class="ct">06 / 각 페이지 소개 문구</p>
       <div class="hint" style="margin-bottom:14px">각 페이지 큰 제목 아래에 들어가는 설명 문장이에요. <b>엔터를 누르면 줄이 나뉩니다.</b> 비우면 기본 문구.</div>
       <div class="ff"><label class="lbl">📅 일정 페이지</label>
         <textarea class="input" id="f-sub-schedule" rows="2" placeholder="휴방은 랜덤 — 방송은 보통 오후 10시 이후에 켜져요. 방송알람을 확인해 주세요."></textarea></div>
@@ -272,7 +292,7 @@ textarea.input{resize:vertical}
           형식이 이상하면 <b>기본값으로 표시</b>되니 화면이 깨지진 않아요.
         </div>
         <div class="ff"><label class="lbl">소속</label><input class="input" id="f-info-agency" placeholder="개인세"></div>
-        <div class="ff"><label class="lbl">플레이 (게임)</label><input class="input" id="f-info-play" placeholder="VRChat"></div>
+        <div class="ff"><label class="lbl">CONTENT (프로필 기본정보 줄)</label><input class="input" id="f-info-play" placeholder="VRChat, 스팀게임"></div>
       </div>
       <div class="rowR"><button class="btn p" onclick="saveLocalProfile()">저장 ✦</button></div>
     </div>
@@ -554,6 +574,7 @@ const ADMIN_PASSWORD = '1234';
 const profileKeys = [
   'main-bg','main-freq','main-lead','main-cta-label','main-cta-text','main-cta-url',
   'main-content','main-symbol','main-marquee',
+  'sub-bg-night','sub-bg-day',
   'sub-schedule','sub-song','sub-work','sub-dress',
   'avatar','soop-id','quote','onair',
   'info-name','info-eng','info-species','info-gender','info-debut','info-birth','info-agency','info-play',
@@ -591,7 +612,15 @@ async function loadProfileFields(){
       if(rows&&rows.length>0&&rows[0].data) saved=rows[0].data; }
   }catch(e){}
   profileKeys.forEach(k=>{ const el=document.getElementById('f-'+k); if(el) el.value=saved[k]||''; });
-  previewAvatar(); previewMainBg();
+  previewAvatar(); previewMainBg(); previewSubBg();
+}
+function previewSubBg(){
+  const n=document.getElementById('sub-bg-n-prev'), d=document.getElementById('sub-bg-d-prev');
+  if(!n||!d) return;
+  const un=(document.getElementById('f-sub-bg-night')?.value||'').trim();
+  const ud=(document.getElementById('f-sub-bg-day')?.value||'').trim();
+  n.style.backgroundImage=`url('${(un||'../assets/optimized/usisi-night.webp').replace(/'/g,'%27')}')`;
+  d.style.backgroundImage=`url('${(ud||'../assets/optimized/usisi-day.webp').replace(/'/g,'%27')}')`;
 }
 function previewMainBg(){
   const el=document.getElementById('main-bg-prev'); if(!el) return;

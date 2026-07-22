@@ -55,6 +55,7 @@
 
         <a
           class="c3-enter"
+          id="mainEnter"
           href="https://www.sooplive.com/station/nwakdifl1"
           target="_blank"
           rel="noreferrer"
@@ -153,6 +154,8 @@
             if (bg) document.getElementById("mainBg").src = bg;
             var url = asText(p["main-cta-url"]).trim();
             if (url) document.getElementById("mainCta").href = url;
+            var soop = asText(p["link1-url"]).trim();
+            if (soop) document.getElementById("mainEnter").href = soop;
           } catch (e) {}
         }
         init();

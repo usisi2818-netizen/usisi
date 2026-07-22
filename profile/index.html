@@ -497,7 +497,7 @@ body.ready .rv.in{opacity:1;transform:none}
 
   <div class="pf-hright">
     <button class="pf-mode" id="pfMode" type="button" aria-label="낮/밤 모드 전환"><span class="mi">☾</span><span class="mt">NIGHT</span></button>
-    <a class="pf-enter" href="https://www.sooplive.com/station/nwakdifl1" target="_blank" rel="noreferrer">ENTER CHANNEL <span aria-hidden="true">↗</span></a>
+    <a class="pf-enter" data-href="link1-url" href="https://www.sooplive.com/station/nwakdifl1" target="_blank" rel="noreferrer">ENTER CHANNEL <span aria-hidden="true">↗</span></a>
   </div>
 </header>
 
@@ -674,10 +674,10 @@ body.ready .rv.in{opacity:1;transform:none}
     <article class="pf-card w2 rv">
       <p class="pf-kick">FILE 09 <em>/ COMMS · 연결</em></p>
       <div class="pf-comms">
-        <a class="pf-lk" href="https://www.sooplive.com/station/nwakdifl1" target="_blank" rel="noreferrer"><small>LIVE ↗</small><b>SOOP 방송국</b></a>
-        <a class="pf-lk" href="https://discord.com/invite/avjW6zQZU9" target="_blank" rel="noreferrer"><small>COMMS ↗</small><b>디스코드</b></a>
-        <a class="pf-lk" href="https://cafe.naver.com/dairycow3" target="_blank" rel="noreferrer"><small>BASE ↗</small><b>팬카페</b></a>
-        <a class="pf-lk" href="https://fancim.me/celeb/profile.aspx?url=941740" target="_blank" rel="noreferrer"><small>SUPPORT ↗</small><b>팬심</b></a>
+        <a class="pf-lk" id="lk1" data-href="link1-url" href="https://www.sooplive.com/station/nwakdifl1" target="_blank" rel="noreferrer"><small data-hook="link1-label">LIVE ↗</small><b data-hook="link1-name">SOOP 방송국</b></a>
+        <a class="pf-lk" id="lk2" data-href="link2-url" href="https://discord.com/invite/avjW6zQZU9" target="_blank" rel="noreferrer"><small data-hook="link2-label">COMMS ↗</small><b data-hook="link2-name">디스코드</b></a>
+        <a class="pf-lk" id="lk3" data-href="link3-url" href="https://cafe.naver.com/dairycow3" target="_blank" rel="noreferrer"><small data-hook="link3-label">BASE ↗</small><b data-hook="link3-name">팬카페</b></a>
+        <a class="pf-lk" id="lk4" data-href="link4-url" href="https://fancim.me/celeb/profile.aspx?url=941740" target="_blank" rel="noreferrer"><small data-hook="link4-label">SUPPORT ↗</small><b data-hook="link4-name">팬심</b></a>
         <button class="pf-lk hi" id="pfAskBtn" type="button"><small>SEND SIGNAL</small><b>📮 문의하기</b></button>
       </div>
     </article>
@@ -687,7 +687,7 @@ body.ready .rv.in{opacity:1;transform:none}
 
 <!-- ================= 푸터 ================= -->
 <footer class="pf-footer">
-  <p>CONTENT / <b>JUST CHATTING · ASMR · FULL TRACKING</b></p>
+  <p>CONTENT / <b data-hook="main-content">JUST CHATTING · ASMR · FULL TRACKING</b></p>
   <p>© 2026 <b>USISI Official</b> — 비즈니스 문의는 SEND SIGNAL</p>
   <p class="pf-moo"><span>Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; Mooooo... &nbsp; </span></p>
 </footer>
@@ -698,7 +698,7 @@ body.ready .rv.in{opacity:1;transform:none}
   <div class="frm">
     <p class="sk"><i></i> SEND SIGNAL</p>
     <h3>우시시에게 문의</h3>
-    <p class="sub">궁금한 것, 하고 싶은 말을 남겨주세요. — 시안 미리보기에서는 실제로 전송되지 않아요.</p>
+    <p class="sub">궁금한 것, 하고 싶은 말을 남겨주세요. (익명)</p>
     <textarea id="pfTa" placeholder="주파수에 실어 보낼 내용을 입력해 주세요"></textarea>
     <div class="row">
       <button type="button" id="pfClose">CLOSE</button>
@@ -775,6 +775,22 @@ function renderLogs(v){
 function renderMultiline(k,v){var t=asText(v);if(!t)return;
   var el=document.querySelector('[data-hook="'+k+'"]');
   if(el)el.innerHTML=esc(t).replace(/\n/g,'<br>');}
+/* 링크 주소 적용 + 비워둔 슬롯은 숨김 */
+function applyLinks(p){
+  document.querySelectorAll('[data-href]').forEach(function(el){
+    var v=p[el.getAttribute('data-href')];
+    if(v==null||typeof v==='object')return;
+    v=String(v).trim();
+    if(v) el.setAttribute('href',v);
+  });
+  for(var i=1;i<=4;i++){
+    var el=document.getElementById('lk'+i); if(!el)continue;
+    var u=p['link'+i+'-url'], n=p['link'+i+'-name'];
+    if(u===undefined&&n===undefined)continue;              /* 저장 안 한 슬롯은 기본값 유지 */
+    var empty=!String(u==null?'':u).trim()&&!String(n==null?'':n).trim();
+    el.style.display = empty ? 'none' : '';
+  }
+}
 function applyAvatar(p){
   var img=document.getElementById('avImg');if(!img)return;
   var direct=asText(p['avatar']).trim();
@@ -812,10 +828,12 @@ function recompute(p){
 function applyProfile(p){
   ['quote','onair','info-name','info-eng','info-species','info-gender','info-debut','info-birth',
    'info-agency','info-play','info-fandom','info-suffix','fan-rule','like-note','motif','personality',
-   'week-note','signature-song'].forEach(function(k){setHook(k,p[k]);});
+   'week-note','signature-song','main-content',
+   'link1-label','link1-name','link2-label','link2-name',
+   'link3-label','link3-name','link4-label','link4-name'].forEach(function(k){setHook(k,p[k]);});
   renderMultiline('sig-note',p['sig-note']);
   renderStats(p['stats']); renderItems(p['items']); renderWeek(p['week']); renderLogs(p['logs']);
-  applyAvatar(p); recompute(p);
+  applyAvatar(p); applyLinks(p); recompute(p);
   if(window.SG){ SG.applyBg(p); SG.fillAll(); }   /* 서브 배경 교체 + 남은 게이지 채움 */
 }
 window.applyProfile=applyProfile; /* 검증용 노출 */

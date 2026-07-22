@@ -358,7 +358,36 @@ textarea.input{resize:vertical}
     </div>
 
     <div class="acard">
-      <p class="ct">10 / ARCHIVE · 다시보기 VOD</p>
+      <p class="ct">10 / COMMS · 관련 링크 <em style="font-style:normal;color:var(--pf-tx3);letter-spacing:.06em">— 프로필 맨 아래 링크 버튼</em></p>
+      <div class="hint" style="margin-bottom:14px">
+        프로필 맨 아래 <b>FILE 09 / COMMS</b> 줄에 뜨는 링크 4개예요.<br>
+        <b>작은 라벨</b>은 위에 뜨는 영문(LIVE ↗ 같은 것), <b>버튼 문구</b>는 굵게 보이는 이름이에요.<br>
+        <b>주소·문구를 둘 다 비우면 그 칸은 화면에서 사라져요</b> (4개 다 안 쓰셔도 됩니다).<br>
+        ⭐ <b>1번 주소</b>는 우측 상단 <b>ENTER CHANNEL</b> 버튼과 메인 페이지에도 함께 적용돼요 (보통 SOOP 방송국).
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label class="lbl">① 작은 라벨</label><input class="input" id="f-link1-label" placeholder="LIVE ↗"></div>
+        <div class="ff"><label class="lbl">① 버튼 문구</label><input class="input" id="f-link1-name" placeholder="SOOP 방송국"></div>
+        <div class="ff full"><label class="lbl">① 주소 <span style="color:#9dccfb">(= ENTER CHANNEL 주소)</span></label><input class="input" id="f-link1-url" type="url" placeholder="https://www.sooplive.com/station/nwakdifl1"></div>
+
+        <div class="ff"><label class="lbl">② 작은 라벨</label><input class="input" id="f-link2-label" placeholder="COMMS ↗"></div>
+        <div class="ff"><label class="lbl">② 버튼 문구</label><input class="input" id="f-link2-name" placeholder="디스코드"></div>
+        <div class="ff full"><label class="lbl">② 주소</label><input class="input" id="f-link2-url" type="url" placeholder="https://discord.com/invite/…"></div>
+
+        <div class="ff"><label class="lbl">③ 작은 라벨</label><input class="input" id="f-link3-label" placeholder="BASE ↗"></div>
+        <div class="ff"><label class="lbl">③ 버튼 문구</label><input class="input" id="f-link3-name" placeholder="팬카페"></div>
+        <div class="ff full"><label class="lbl">③ 주소</label><input class="input" id="f-link3-url" type="url" placeholder="https://cafe.naver.com/…"></div>
+
+        <div class="ff"><label class="lbl">④ 작은 라벨</label><input class="input" id="f-link4-label" placeholder="SUPPORT ↗"></div>
+        <div class="ff"><label class="lbl">④ 버튼 문구</label><input class="input" id="f-link4-name" placeholder="팬심"></div>
+        <div class="ff full"><label class="lbl">④ 주소</label><input class="input" id="f-link4-url" type="url" placeholder="https://fancim.me/…"></div>
+      </div>
+      <div class="hint" style="margin-top:2px">📮 <b>문의하기</b> 버튼은 고정이에요 (누르면 문의 모달이 열려요 · 받은 문의는 📮문의 탭에서 확인).</div>
+      <div class="rowR"><button class="btn p" onclick="saveLocalProfile()">저장 ✦</button></div>
+    </div>
+
+    <div class="acard">
+      <p class="ct">11 / ARCHIVE · 다시보기 VOD</p>
       <div class="form-grid">
         <div class="ff full"><label class="lbl">영상 제목 *</label><input class="input" id="os-title" placeholder="예: 데뷔 방송 다시보기"></div>
         <div class="ff full"><label class="lbl">SOOP VOD ID *</label><input class="input" id="os-vod" placeholder="194780409"></div>
@@ -370,7 +399,7 @@ textarea.input{resize:vertical}
     </div>
 
     <div class="acard">
-      <p class="ct">11 / 사용법 · 규격 안내</p>
+      <p class="ct">12 / 사용법 · 규격 안내</p>
       <div class="hint" style="line-height:2.1">
         <b>· 프사</b> — SOOP 아이디만 넣으면 자동 연동, 직접 URL을 넣으면 그게 우선.<br>
         <b>· D-Day / D+</b> — <b>기본정보 카드의 생일·데뷔일 칸</b>에서만 계산돼요. 연도는 있어도 없어도 인식(<code>06.01</code>·<code>2026.06.01</code> 둘 다 OK).<br>
@@ -378,6 +407,7 @@ textarea.input{resize:vertical}
         <b>· 능력치/일정/기록</b> — 각 카드의 규격(<code>이름:숫자</code>, <code>아이콘|시간|라벨</code>, <code>날짜|제목|설명</code>) 그대로. 비우면 기본값 유지.<br>
         <b>· 옷장 사진</b> — 세로 <b>3:4 (900×1200 권장)</b>, SOOP 비공개 게시판 업로드 → 이미지 <b>우클릭 → "이미지 주소 복사"</b> (<code>https://stimg.sooplive.com/…</code>) — 글 주소 ✗.<br>
         <b>· VOD</b> — 다시보기 주소의 <b>숫자 ID만</b>.<br>
+        <b>· 관련 링크</b> — 10번 카드. 주소·문구를 <b>둘 다 비우면 그 칸이 사라져요</b>.<br>
         <b>· 저장 후 안 보이면</b> — 해당 페이지에서 <code>Ctrl+Shift+R</code> 강력 새로고침.
       </div>
     </div>
@@ -582,6 +612,8 @@ const profileKeys = [
   'stats','items','motif','personality',
   'week','week-note','logs',
   'signature-song','sig-note',
+  'link1-label','link1-name','link1-url','link2-label','link2-name','link2-url',
+  'link3-label','link3-name','link3-url','link4-label','link4-name','link4-url',
   'theme-ice','theme-blue','theme-glow','theme-navy','theme-deep'
 ];
 

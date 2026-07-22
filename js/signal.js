@@ -145,6 +145,11 @@
       var res=await db.from('profile').select('data').eq('id',1).single();
       var p=res&&res.data&&res.data.data; if(!p)return;
       SG.applyBg(p);
+      $$('[data-href]').forEach(function(el){
+        var u=p[el.getAttribute('data-href')];
+        if(u==null||typeof u==='object')return;
+        u=String(u).trim(); if(u) el.setAttribute('href',u);
+      });
       $$('[data-hook]').forEach(function(el){
         var v=p[el.getAttribute('data-hook')];
         if(v==null||typeof v==='object')return;      /* 타입 방어: [object Object] 금지 */

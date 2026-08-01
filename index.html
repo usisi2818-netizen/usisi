@@ -30,6 +30,12 @@
         src="assets/optimized/usisi-night.webp"
         alt="밤바다를 배경으로 누워 있는 우시시"
       />
+      <script>
+        /* 캐시된 메인 배경을 파싱 직후 즉시 적용 (기본 이미지 깜빡임 방지) */
+        (function(){try{var c=JSON.parse(localStorage.getItem("usisi-bg")||"{}");
+          if(c.mainBg){var el=document.getElementById("mainBg");if(el)el.src=c.mainBg;}
+        }catch(e){}})();
+      </script>
       <div class="c3-gradient" aria-hidden="true"></div>
       <div class="c3-grid" aria-hidden="true"></div>
 
@@ -142,6 +148,11 @@
         }
         async function init() {
           try {
+            // 캐시된 메인 배경 즉시 적용 (DB 로딩 전 깜빡임 방지)
+            try {
+              var c = JSON.parse(localStorage.getItem("usisi-bg") || "{}");
+              if (c.mainBg) document.getElementById("mainBg").src = c.mainBg;
+            } catch (e) {}
             if (typeof db === "undefined" || !db) return;
             var res = await db.from("profile").select("data").eq("id", 1).single();
             var p = res && res.data && res.data.data;

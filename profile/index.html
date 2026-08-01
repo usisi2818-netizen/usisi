@@ -470,6 +470,15 @@ body.ready .rv.in{opacity:1;transform:none}
 </head>
 
 <body class="pf-page">
+<script>
+/* 캐시된 배경을 첫 페인트에 즉시 적용 — DB 로딩 전 기본 이미지 깜빡임(FOUC) 방지 */
+(function(){try{
+  var c=JSON.parse(localStorage.getItem('usisi-bg')||'{}');
+  var r=document.documentElement.style;
+  if(c.night)r.setProperty('--sub-bg-night','url("'+c.night.replace(/"/g,'%22')+'")');
+  if(c.day)r.setProperty('--sub-bg-day','url("'+c.day.replace(/"/g,'%22')+'")');
+}catch(e){}})();
+</script>
 <script>if(localStorage.getItem('usisi-mode')==='day')document.body.classList.add('day');</script>
 <div class="pf-gridbg" aria-hidden="true"></div>
 <div id="pfStars" aria-hidden="true"></div>

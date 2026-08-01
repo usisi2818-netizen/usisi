@@ -9,6 +9,15 @@
 <link rel="icon" type="image/jpeg" href="https://profile.img.sooplive.co.kr/LOGO/nw/nwakdifl1/nwakdifl1.jpg">
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="../css/signal.css">
+<script>
+/* 캐시된 배경을 첫 페인트에 즉시 적용 — DB 로딩 전 기본 이미지 깜빡임(FOUC) 방지 */
+(function(){try{
+  var c=JSON.parse(localStorage.getItem('usisi-bg')||'{}');
+  var r=document.documentElement.style;
+  if(c.night)r.setProperty('--sub-bg-night','url("'+c.night.replace(/"/g,'%22')+'")');
+  if(c.day)r.setProperty('--sub-bg-day','url("'+c.day.replace(/"/g,'%22')+'")');
+}catch(e){}})();
+</script>
 <style>
 /* ── UPBO 전용 ── */
 .up-bar{display:flex;gap:10px;align-items:center;margin-bottom:20px;flex-wrap:wrap}

@@ -644,6 +644,12 @@ async function loadProfileFields(){
       if(rows&&rows.length>0&&rows[0].data) saved=rows[0].data; }
   }catch(e){}
   profileKeys.forEach(k=>{ const el=document.getElementById('f-'+k); if(el) el.value=saved[k]||''; });
+  try{  // 캐시 시딩: 다음 방문 첫 페인트에 바로 반영
+    localStorage.setItem('usisi-bg', JSON.stringify({
+      night:saved['sub-bg-night']||'', day:saved['sub-bg-day']||'',
+      mainBg:saved['main-bg']||'', avatar:saved['avatar']||'', soop:saved['soop-id']||''
+    }));
+  }catch(e){}
   previewAvatar(); previewMainBg(); previewSubBg();
 }
 function previewSubBg(){
@@ -676,12 +682,18 @@ async function saveLocalProfile(){
   profileKeys.forEach(k=>{ const el=document.getElementById('f-'+k); if(el) saved[k]=el.value; });
   const {error}=await db.from('profile').upsert({id:1,data:saved});
   if(error){ showToast('❌ 저장 실패: '+error.message); return; }
+  try{  // 배경/프사를 캐시해 재방문 첫 페인트에 바로 적용 (기본 이미지 깜빡임 방지)
+    localStorage.setItem('usisi-bg', JSON.stringify({
+      night:saved['sub-bg-night']||'', day:saved['sub-bg-day']||'',
+      mainBg:saved['main-bg']||'', avatar:saved['avatar']||'', soop:saved['soop-id']||''
+    }));
+  }catch(e){}
   showToast('✅ 저장됐어요! (페이지에서 새로고침으로 확인)');
 }
 
 /* ── 일정 ── */
 async function loadSchedule(){
-  const data=await fetchAll('schedule',{order:'date',asc:true});
+  const data=await fetchAll('schedule',{order:'date',asc:false});   // admin은 최신 위로 (홈페이지 UPCOMING과 무관)
   const t=document.getElementById('sch-list');
   if(!data.length){ t.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--pf-tx3);padding:20px">등록된 일정 없음</td></tr>'; return; }
   t.innerHTML=data.map(s=>{

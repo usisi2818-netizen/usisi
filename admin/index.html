@@ -140,9 +140,10 @@ textarea.input{resize:vertical}
   <div class="login-bx">
     <p class="sk"><i></i> ADMIN ACCESS</p>
     <h1>USISI CONSOLE</h1>
-    <p class="s">관리자 비밀번호를 입력하세요</p>
-    <input class="input" type="password" id="pwInput" placeholder="PASSWORD" style="text-align:center;letter-spacing:.2em" onkeydown="if(event.key==='Enter')tryLogin()">
-    <button class="btn p" style="width:100%;justify-content:center;margin-top:10px" onclick="tryLogin()">ENTER ↗</button>
+    <p class="s">관리자 계정으로 로그인</p>
+    <input class="input" type="email" id="emailInput" placeholder="이메일" autocomplete="username" style="text-align:center;margin-bottom:8px" onkeydown="if(event.key==='Enter')tryLogin()">
+    <input class="input" type="password" id="pwInput" placeholder="비밀번호" autocomplete="current-password" style="text-align:center;letter-spacing:.1em" onkeydown="if(event.key==='Enter')tryLogin()">
+    <button class="btn p" id="loginBtn" style="width:100%;justify-content:center;margin-top:10px" onclick="tryLogin()">ENTER ↗</button>
     <div class="login-err" id="loginErr"></div>
   </div>
 </div>
@@ -150,7 +151,8 @@ textarea.input{resize:vertical}
 <div id="adminBody" style="display:none">
 <div class="abar">
   <span class="lg"><i>✦</i> USISI</span><span class="tag">ADMIN CONSOLE</span>
-  <a href="../">사이트 보기 ↗</a>
+  <a href="../" style="margin-left:auto">사이트 보기 ↗</a>
+  <button class="btn" id="logoutBtn" style="margin-left:14px" onclick="doLogout()">로그아웃</button>
 </div>
 
 <div class="awrap">
@@ -598,8 +600,6 @@ textarea.input{resize:vertical}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="../supabase.js"></script>
 <script>
-const ADMIN_PASSWORD = '1234';
-
 /* ── profileKeys: 프로필 페이지 data-hook ↔ 여기 f-{key} ↔ DB 키 3종 일치 ── */
 const profileKeys = [
   'main-bg','main-freq','main-lead','main-cta-label','main-cta-text','main-cta-url',
@@ -617,17 +617,37 @@ const profileKeys = [
   'theme-ice','theme-blue','theme-glow','theme-navy','theme-deep'
 ];
 
-function tryLogin(){
-  if(document.getElementById('pwInput').value === ADMIN_PASSWORD){
-    document.getElementById('loginOverlay').style.display='none';
-    document.getElementById('adminBody').style.display='block';
-    if(!db) document.getElementById('dbBanner').style.display='block';
-    loadProfileFields();
-    loadSchedule(); loadSong(); loadWork(); loadDress(); loadInquiry(); loadOriginalSongs(); loadOverlay();
-  } else {
-    document.getElementById('loginErr').textContent='ACCESS DENIED — 비밀번호가 틀렸어요';
-  }
+function enterConsole(){
+  document.getElementById('loginOverlay').style.display='none';
+  document.getElementById('adminBody').style.display='block';
+  if(!db) document.getElementById('dbBanner').style.display='block';
+  loadProfileFields();
+  loadSchedule(); loadSong(); loadWork(); loadDress(); loadInquiry(); loadOriginalSongs(); loadOverlay();
 }
+async function tryLogin(){
+  const err=document.getElementById('loginErr');
+  const email=(document.getElementById('emailInput').value||'').trim();
+  const pw=document.getElementById('pwInput').value||'';
+  if(!db){ err.textContent='Supabase 키가 설정되지 않았어요 (supabase.js 확인)'; return; }
+  if(!email||!pw){ err.textContent='이메일과 비밀번호를 입력해 주세요'; return; }
+  const btn=document.getElementById('loginBtn'); btn.disabled=true; err.textContent='';
+  const { error }=await db.auth.signInWithPassword({ email, password:pw });
+  btn.disabled=false;
+  if(error){ err.textContent='로그인 실패 — 이메일/비밀번호를 확인해 주세요'; return; }
+  enterConsole();
+}
+async function doLogout(){
+  try{ if(db) await db.auth.signOut(); }catch(e){}
+  location.reload();
+}
+async function restoreSession(){
+  try{
+    if(!db) return;
+    const { data }=await db.auth.getSession();
+    if(data && data.session) enterConsole();
+  }catch(e){}
+}
+restoreSession();
 function switchTab(name,btn){
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
